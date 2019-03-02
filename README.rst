@@ -1,7 +1,7 @@
 FitLog
 ======
 
-FitLog is a project which aims at log your fitness activity.
+FitLog is a personal app which aims at log your fitness activity.
 
 You can create your programs, which is a group of exercices with sets and reps.
 
@@ -13,5 +13,3 @@ Sure there is a ton of apps which already do this??
 In fact, we want it as simple as possible, mostly with a lightweight interface
 for mobile devices. We want to log it quicky from everywhere (desktop, laptop,
 whatever) otherwise... we won't do it!
-
-And mostly, I don't have a lot of times so... I hope I could do it quickly!!

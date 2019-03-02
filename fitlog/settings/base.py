@@ -66,6 +66,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'fitlog.core.context_processors.extra',
             ],
         },
     },
@@ -151,6 +153,7 @@ SWAGGER_SETTINGS = {
     'SHOW_REQUEST_HEADERS': True,
 }
 
+LOGIN_REDIRECT_URL = 'trainings:workout_list'
 LOGOUT_REDIRECT_URL = 'login'
 
 FITLOG = {}

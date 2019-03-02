@@ -1,5 +1,6 @@
+from datetime import date
+
 from django.db import models
-from django.utils.timezone import now as tz_now
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -36,6 +37,10 @@ class Workout(models.Model):
 
 
 class WorkoutExercise(models.Model):
+    """
+    To suggest exercises to log per training, we must define a list of exercises
+    for a workout.
+    """
     workout = models.ForeignKey(Workout, related_name='workout_exercises', on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, related_name='workout_exercises', on_delete=models.CASCADE)
     order = models.IntegerField(default=0)
@@ -43,20 +48,15 @@ class WorkoutExercise(models.Model):
     class Meta:
         db_table = 'workout_exercises'
 
-    def __str__(self):
-        return '{} - {}'.format(self.workout.name, self.exercise.name)
-
 
 class TrainingLog(models.Model):
-    workout_exercise = models.ForeignKey(WorkoutExercise, related_name='trainings', on_delete=models.CASCADE)
-    # workout = models.ForeignKey(Workout, related_name='training_logs', on_delete=models.CASCADE)
-    # exercise = models.ForeignKey(Exercise, related_name='training_logs', on_delete=models.CASCADE)
-    date = models.DateTimeField(default=tz_now)
+    # Instead of having a foreign key on WorkoutExercise which is too much
+    # restrictive, we open the model.
+    workout = models.ForeignKey(Workout, related_name='trainings', on_delete=models.CASCADE)
+    exercise = models.ForeignKey(Exercise, related_name='trainings', on_delete=models.CASCADE)
+    date = models.DateField(default=date.today)
     sets = models.IntegerField()
     reps = models.IntegerField()
 
     class Meta:
         db_table = 'training_logs'
-
-    def __str__(self):
-        return self.name

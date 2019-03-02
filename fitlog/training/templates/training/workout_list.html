@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans 'Workouts' %}{% endblock %}
+{% block content %}
+<div class="card mb-3">
+  <div class="card-header">
+    <i class="fas fa-table"></i>
+    {% trans 'Workouts' %}
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+
+      <table class="table table-bordered" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Exercises</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for workout in object_list %}
+          <tr>
+            <td>{{ workout.name }}</td>
+            <td>
+              <ul>
+              {% for exercise in workout.exercises.all %}
+                <li>{{ exercise.name }}</li>
+              {% endfor %}
+              </ul>
+            </td>
+            <td><a href="#">{% trans 'Delete' %}</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

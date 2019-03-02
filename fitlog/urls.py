@@ -34,8 +34,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(api_urls)),
 
+    path('training/', include('fitlog.training.urls', namespace='trainings')),
+
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
-    path('login/', LoginView.as_view(), name='login'),
+    path('login/', LoginView.as_view(redirect_authenticated_user=True), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('', HomePageRedirectView.as_view(), name='home'),
 ]
