@@ -1,0 +1,49 @@
+{% load i18n staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="FitLog">
+  <meta name="author" content="Yannick Chabbert">
+
+  <title>{% block title %}{{ title | default:"FitLog" }}{% endblock %}</title>
+
+  <link href="{% static 'sb-admin/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'sb-admin/css/sb-admin.css' %}" rel="stylesheet">
+
+  {% block extrastyle %}{{ form.media.css }}{% endblock %}
+  {% block extrahead %}{% endblock %}
+  {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+</head>
+
+<body id="page-top">
+  {% include 'navbar.html' %}
+
+  <div id="wrapper">
+    {% include 'sidebar.html' %}
+
+    <div id="content-wrapper">
+      <div class="container-fluid">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  {% include 'logout.html' %}
+
+  <script src="{% static 'sb-admin/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'sb-admin/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'sb-admin/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+  <script src="{% static 'sb-admin/js/sb-admin.min.js' %}"></script>
+
+  <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+  {% block extrabody %}{% endblock %}
+</body>
+
+</html>

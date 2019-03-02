@@ -1,0 +1,12 @@
+{
+    "name": "Fitlog",
+    "version": "0.0.1",
+    "license": "MIT",
+    "author": "Yannick Chabbert",
+    "dependencies": {
+        "startbootstrap-sb-admin": "5.0.3"
+    },
+    "devDependencies": {
+        "gulp": "^4.0.0"
+    }
+}

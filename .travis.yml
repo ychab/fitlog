@@ -1,0 +1,25 @@
+sudo: false
+language: python
+python:
+    - "3.6"
+addons:
+    postgresql: "10"
+env:
+    - TOXENV=codestyle
+    - TOXENV=sort
+    - TOXENV=docs
+    - TOXENV=py36-reverse
+    - TOXENV=py36-report
+install:
+    - pip install coveralls tox
+before_script:
+    - createuser -U postgres -d fitlog
+    - createdb -U postgres -O fitlog fitlog
+    - cp fitlog/settings/local.py.dist fitlog/settings/local.py
+    - sed -i 's/<DB_NAME>/fitlog/g' fitlog/settings/local.py
+    - sed -i 's/<DB_USER>/fitlog/g' fitlog/settings/local.py
+    - sed -i 's/<SECRET_KEY>/test-test-test/g' fitlog/settings/local.py
+script:
+    - tox
+after_success:
+    - coveralls
