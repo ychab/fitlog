@@ -1,7 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
+from rest_framework.viewsets import ModelViewSet
 
-from fitlog.training.models import Exercise, Routine, Workout
+from fitlog.training.models import Exercise, Routine, TrainingLog, Workout
+from fitlog.training.serializers import (
+    ExerciseSerializer, RoutineSerializer, TrainingLogSerializer,
+    WorkoutSerializer, WorkoutSaveSerializer,
+)
 
 
 class RoutineListView(LoginRequiredMixin, generic.ListView):
@@ -21,3 +26,27 @@ class WorkoutListView(LoginRequiredMixin, generic.ListView):
 
 class WorkoutDetailView(LoginRequiredMixin, generic.DetailView):
     model = Workout
+
+
+class RoutineViewSet(ModelViewSet):
+    queryset = Routine.objects.all()
+    serializer_class = RoutineSerializer
+
+
+class ExerciseViewSet(ModelViewSet):
+    queryset = Exercise.objects.all()
+    serializer_class = ExerciseSerializer
+
+
+class WorkoutViewSet(ModelViewSet):
+    queryset = Workout.objects.all()
+
+    def get_serializer_class(self):
+        if self.action in ['create', 'partial_update', 'update']:
+            return WorkoutSaveSerializer
+        return WorkoutSerializer
+
+
+class TrainingLogViewSet(ModelViewSet):
+    queryset = TrainingLog.objects.all()
+    serializer_class = TrainingLogSerializer
