@@ -44,6 +44,8 @@ class WorkoutExercise(models.Model):
     workout = models.ForeignKey(Workout, related_name='workout_exercises', on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, related_name='workout_exercises', on_delete=models.CASCADE)
     order = models.IntegerField(default=0)
+    sets = models.IntegerField()
+    reps = models.IntegerField()
 
     class Meta:
         db_table = 'workout_exercises'
@@ -55,8 +57,9 @@ class TrainingLog(models.Model):
     workout = models.ForeignKey(Workout, related_name='trainings', on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, related_name='trainings', on_delete=models.CASCADE)
     date = models.DateField(default=date.today)
-    sets = models.IntegerField()
+    set = models.IntegerField()
     reps = models.IntegerField()
+    weight = models.FloatField()
 
     class Meta:
         db_table = 'training_logs'

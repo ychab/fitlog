@@ -51,7 +51,7 @@ class TrainingLogAdmin(admin.ModelAdmin):
         'workout',
         'exercise',
         'date',
-        'sets',
+        'set',
         'reps',
     ]
     list_display_links = ['id']

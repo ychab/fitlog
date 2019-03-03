@@ -22,7 +22,7 @@
         <tbody>
           {% for workout in object_list %}
           <tr>
-            <td>{{ workout.name }}</td>
+            <td><a href="{% url 'trainings:workout_detail' workout.pk %}">{{ workout.name }}</a></td>
             <td>
               <ul>
               {% for exercise in workout.exercises.all %}
