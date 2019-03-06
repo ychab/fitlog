@@ -1,4 +1,4 @@
-{% load i18n staticfiles %}
+{% load i18n staticfiles core_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,8 +26,19 @@
 
     <div id="content-wrapper">
       <div class="container-fluid">
-        <div id="app">
 
+        {# Backend messages #}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.level|alert_type }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="{% trans 'Close' %}">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endfor %}
+
+        <div id="app">
+          {# Frontend messages #}
           <div v-for="(msg, type) in messages" v-bind:class="'alert alert-' + type + ' alert-dismissible fade show'" role="alert">
             [[ msg ]]
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">

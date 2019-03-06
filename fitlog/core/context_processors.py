@@ -3,7 +3,6 @@ from fitlog.training.models import Workout
 
 def extra(request):
     data = {
-        'routines': [],
         'workouts': [],
     }
 
