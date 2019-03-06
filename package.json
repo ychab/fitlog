@@ -4,7 +4,10 @@
     "license": "BSD-3-Clause",
     "author": "Yannick Chabbert",
     "dependencies": {
-        "startbootstrap-sb-admin": "5.0.3"
+        "axios": "^0.18.0",
+        "startbootstrap-sb-admin": "5.0.3",
+        "vue": "^2.6.8",
+        "vue-cookies": "^1.5.12"
     },
     "devDependencies": {
         "gulp": "^4.0.0"
