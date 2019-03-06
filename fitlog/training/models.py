@@ -46,6 +46,7 @@ class WorkoutExercise(models.Model):
     order = models.IntegerField(default=0)
     sets = models.IntegerField()
     reps = models.IntegerField()
+    rest_period = models.IntegerField(help_text='In seconds', default=90)
 
     class Meta:
         db_table = 'workout_exercises'
@@ -56,10 +57,14 @@ class TrainingLog(models.Model):
     # restrictive, we open the model.
     workout = models.ForeignKey(Workout, related_name='trainings', on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, related_name='trainings', on_delete=models.CASCADE)
+
     date = models.DateField(default=date.today)
     set = models.IntegerField()
     reps = models.IntegerField()
     weight = models.FloatField()
+
+    rest_period = models.IntegerField(help_text='In seconds', null=True, blank=True)
+    tempo = models.CharField(max_length=7, null=True, blank=True)
 
     class Meta:
         db_table = 'training_logs'
