@@ -27,10 +27,11 @@ class ExerciseWorkoutSerializer(serializers.ModelSerializer):
 
 
 class WorkoutSerializer(serializers.ModelSerializer):
+    url = serializers.CharField(source='get_absolute_url', read_only=True)
 
     class Meta:
         model = Workout
-        fields = ('id', 'name', 'routine', 'exercises')
+        fields = ('id', 'name', 'routine', 'exercises', 'url')
 
 
 class WorkoutSaveSerializer(serializers.ModelSerializer):

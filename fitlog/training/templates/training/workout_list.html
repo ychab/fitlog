@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load i18n static %}
 
 {% block title %}{% trans 'Workouts' %}{% endblock %}
 {% block content %}
@@ -15,27 +15,87 @@
         <thead>
           <tr>
             <th>Name</th>
+            <th>Routine</th>
             <th>Exercises</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {% for workout in object_list %}
-          <tr>
-            <td><a href="{% url 'trainings:workout_detail' workout.pk %}">{{ workout.name }}</a></td>
+          <tr v-if="loadingWorkout || loadingRoutines || loading_exercises"><td colspan="4">{% trans 'Loading...' %}</td></tr>
+
+          <tr v-if="!loadingWorkout && !loadingRoutines && !loading_exercises">
+            <td><input class="form-control" type="text" required v-model="new_workout.name" placeholder="{% trans 'Name' %}" /></td>
             <td>
-              <ul>
-              {% for exercise in workout.exercises.all %}
-                <li>{{ exercise.name }}</li>
-              {% endfor %}
-              </ul>
+              <select class="form-control" required v-model="new_workout.routine">
+                <option v-for="routine in routines" v-bind:value="routine.id">[[ routine.name ]]</option>
+              </select>
             </td>
-            <td><a href="#">{% trans 'Delete' %}</a></td>
+            <td>
+              <select class="form-control" multiple required v-model="new_workout.exercises">
+                <option v-for="exercice in exercises" v-bind:value="exercice.id">[[ exercice.name ]]</option>
+              </select>
+            </td>
+            <td>
+              <button class="btn btn-link" v-on:click="createWorkout(new_workout)" type="submit"><i class="fas fa-plus"></i></button>
+              <div v-if="pendingAdd" class="spinner-border" role="status">
+                <span class="sr-only">{% trans 'Loading...' %}</span>
+              </div>
+            </td>
           </tr>
-          {% endfor %}
+
+          <tr v-if="!loadingWorkout && !loadingRoutines && !loading_exercises" v-for="workout in workouts">
+            <form>
+            <td>
+              <input class="form-control" type="text" v-model="workout.name" />
+            </td>
+            <td>
+              <select class="form-control" multiple v-model="workout.routine">
+                <option v-for="routine in workout.routines" v-bind:value="routine.id">[[ routine.name ]]</option>
+              </select>
+            </td>
+            <td>
+              <select class="form-control" multiple v-model="workout.exercises">
+                <option v-for="exercise in exercises" v-bind:value="exercise.id">[[ exercise.name ]]</option>
+              </select>
+            </td>
+            <td>
+              <a href="workout.url"><i class="fas fa-eye"></i></a>
+              <button type="submit" class="btn btn-link" v-on:click="updateWorkout(workout)"><i class="fas fa-save"></i></button>
+              <div v-if="pendingUpdate == workout.id" class="spinner-border" role="status"></div>
+
+              <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target="'#modal-delete-' + workout.id"><i class="fas fa-trash"></i></button>
+            </td>
+            </form>
+          </tr>
         </tbody>
       </table>
     </div>
   </div>
+
+  <div v-for="workout in workouts" class="modal" tabindex="-1" role="dialog" v-bind:id="'modal-delete-' + workout.id">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{% trans 'Delete workout' %}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>{% trans 'Are you sure you want to delete this workout?' %}</p>
+          <p>[[ workout.name ]]</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans 'Close' %}</button>
+          <button type="button" class="btn btn-danger" v-on:click="deleteWorkout(workout)">{% trans 'Delete' %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
+{% endblock %}
+
+{% block extrabody %}
+<script src="{% static 'training/js/workouts.js' %}"></script>
 {% endblock %}

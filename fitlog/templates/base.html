@@ -39,8 +39,8 @@
 
         <div id="app">
           {# Frontend messages #}
-          <div v-for="(msg, type) in messages" v-bind:class="'alert alert-' + type + ' alert-dismissible fade show'" role="alert">
-            [[ msg ]]
+          <div v-for="message in messages" v-bind:class="'alert alert-' + message.type + ' alert-dismissible fade show'" role="alert">
+            [[ message.text ]]
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>

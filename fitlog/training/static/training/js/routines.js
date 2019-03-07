@@ -1,4 +1,4 @@
-var app = new Vue({
+let app = new Vue({
   delimiters: ['[[', ']]'],
   el: '#app',
   data() {
@@ -14,7 +14,27 @@ var app = new Vue({
     }
   },
   created() {
-    axios.defaults.headers.common['X-CSRFToken'] = this.$cookies.get('csrftoken');
+    axios.defaults.headers.common['X-CSRFToken'] = this.$cookies.get('csrftoken')
+
+    axios.interceptors.response.use(null, (error) => {
+      let messages = []
+
+      if (error.response.status == 400) {
+        for (const field in error.response.data) {
+          let msgs = error.response.data[field]
+          for (let msg of msgs) {
+            messages.push({type: 'danger', text: field + ' : ' + msg})
+          }
+        }
+      } else {
+        messages.push({type: 'danger', text: gettext('Oups... Looks like an error occured :/')})
+      }
+
+      this.messages = messages
+      console.log(error)
+
+      return Promise.reject(error)
+    })
   },
   mounted() {
     axios
@@ -33,7 +53,7 @@ var app = new Vue({
         })
     },
     createRoutine: function (routine) {
-      this.pending_adding = true;
+      this.pending_adding = true
 
       axios
         .post('/api/routines/', {
@@ -42,13 +62,13 @@ var app = new Vue({
         .then(response => {
           this.new_routine = {
             name: null
-          };
-          this.refreshRoutines();
+          }
+          this.refreshRoutines()
         })
         .finally(() => this.pending_adding = false)
     },
     updateRoutine: function (routine) {
-      this.pending_update = routine.id;
+      this.pending_update = routine.id
 
       axios
         .patch('/api/routines/' + routine.id + '/', {
@@ -60,9 +80,9 @@ var app = new Vue({
       axios
         .delete('/api/routines/' + routine.id + '/')
         .then(response => {
-          $('#modal-delete-' + routine.id).modal('hide');
-          this.refreshRoutines();
+          $('#modal-delete-' + routine.id).modal('hide')
+          this.refreshRoutines()
         })
     }
   }
-});
+})

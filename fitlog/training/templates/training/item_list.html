@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block title %}{% trans 'Exercises' %}{% endblock %}
+{% block content %}
+<div class="card mb-3">
+  <div class="card-header">
+    <i class="fas fa-table"></i>
+    {% block table_title %}{% endblock %}
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+
+      <table class="table table-bordered" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="loading"><td colspan="2">{% trans 'Loading...' %}</td></tr>
+          <tr v-if="!loading">
+            <td><input class="form-control" type="text" required v-model="newItem.name" placeholder="{% trans 'Name' %}" /></td>
+            <td>
+              <button class="btn btn-link" v-on:click="create(newItem)" type="submit"><i class="fas fa-plus"></i></button>
+              <div v-if="pending_adding" class="spinner-border" role="status">
+                <span class="sr-only">{% trans 'Loading...' %}</span>
+              </div>
+            </td>
+          </tr>
+          <tr v-if="!loading" v-for="item in items">
+            <form>
+            <td>
+              <input class="form-control" type="text" v-model="item.name" />
+            </td>
+            <td>
+              <button type="submit" class="btn btn-link" v-on:click="update(item)"><i class="fas fa-save"></i></button>
+              <div v-if="pendingUpdate == item.id" class="spinner-border" role="status"></div>
+
+              <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target="'#modal-delete-' + item.id"><i class="fas fa-trash"></i></button>
+            </td>
+            </form>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div v-for="item in items" class="modal" tabindex="-1" role="dialog" v-bind:id="'modal-delete-' + item.id">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{% trans 'Delete exercise' %}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>{% trans 'Are you sure you want to delete it?' %}</p>
+          <p>[[ item.name ]]</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans 'Close' %}</button>
+          <button type="button" class="btn btn-danger" v-on:click="delete(item)">{% trans 'Delete' %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extrabody %}
+<script src="{% static 'js/fitlog.js' %}"></script>
+{% endblock %}
