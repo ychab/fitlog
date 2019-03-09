@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block title %}{% trans 'Resources' %}{% endblock %}
+{% block content %}
+  <div class="card mb-3">
+    <div class="card-header">
+      <i class="fas fa-table"></i>
+      {% block table_title %}{% endblock %}
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+
+        <table class="table table-bordered" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-if="loading">
+              <td colspan="2">
+                <div class="d-flex align-items-center">
+                  <strong>{% trans 'Loading...' %}</strong>
+                  <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+                </div>
+              </td>
+            </tr>
+            <tr v-if="!loading">
+              <td><input class="form-control" type="text" required v-model="newResource.name" placeholder="{% trans 'Name' %}"/></td>
+              <td>
+                <button class="btn btn-link" v-on:click="createResource(newResource)" type="submit"><i class="fas fa-plus"></i></button>
+                <div v-if="creating" class="spinner-border" role="status">
+                  <span class="sr-only">{% trans 'Loading...' %}</span>
+                </div>
+              </td>
+            </tr>
+            <tr v-if="!loading" v-for="resource in resources">
+              <form>
+                <td>
+                  <input class="form-control" type="text" v-model="resource.name"/>
+                </td>
+                <td>
+                  <button type="submit" class="btn btn-link" v-on:click="updateResource(resource)"><i class="fas fa-save"></i></button>
+                  <div v-if="updating == resource.id" class="spinner-border" role="status"></div>
+
+                  <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target="'#modal-delete-' + resource.id">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </form>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    {% include 'training/resource_delete_modal.html' %}
+
+  </div>
+{% endblock %}
+
+{% block extrabody %}
+  <script src="{% static 'training/js/resource.js' %}"></script>
+{% endblock %}

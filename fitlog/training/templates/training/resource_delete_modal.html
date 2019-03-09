@@ -1,0 +1,22 @@
+{% load i18n %}
+
+<div v-for="resource in resources" class="modal" tabindex="-1" role="dialog" v-bind:id="'modal-delete-' + resource.id">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{% trans 'Delete' %} [[ resource.name ]]</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{% trans 'Are you sure you want to delete it?' %}</p>
+        <p>[[ resource.name ]]</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans 'Close' %}</button>
+        <button type="button" class="btn btn-danger" v-on:click="deleteResource(resource)">{% trans 'Delete' %}</button>
+      </div>
+    </div>
+  </div>
+</div>

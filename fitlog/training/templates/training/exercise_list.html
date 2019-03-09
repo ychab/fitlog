@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'training/resource_list.html' %}
 {% load i18n static %}
 
 {% block title %}{% trans 'Exercises' %}{% endblock %}
@@ -6,6 +6,22 @@
 
 {% block extrabody %}
 {{ block.super }}
-<script src="{% static 'js/fitlog.js' %}"></script>
-<script src="{% static 'training/js/exercises.js' %}"></script>
+
+<script type="text/javascript">
+  const app = new Vue({
+    ... baseResourceApp,
+    data() {
+      return {
+        ...baseResourceApp.data(),
+        resourcePath: 'exercises',
+        resourceFields: {
+          name: {
+            type: 'string',
+            default: ''
+          }
+        }
+      }
+    }
+  })
+</script>
 {% endblock %}
