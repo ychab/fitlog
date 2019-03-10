@@ -1,58 +1,74 @@
-const workoutModel = {
-  name: null,
-  routine: null,
-  exercises: [],
-}
-const newWorkout = {...workoutModel}
-
-let app = new Vue({
-  delimiters: ['[[', ']]'],
-  el: '#app',
+const app = new Vue({
+  ... baseResourceApp,
   data() {
     return {
       messages: {},
+      formErrors: {},
+      modalMessages: {},
 
       loadingWorkout: true,
       loadingRoutines: true,
       loadingExercises: true,
 
-      workouts: [],
+      resources: [],
       routines: [],
       exercises: [],
 
-      newWorkout,
-      pendingAdd: false,
-      pendingUpdate: 0
+      creating: false,
+      updating: false,
+      deleting: false,
+
+      resourcePath: 'workouts',
+      resourceFields: {
+        name: {
+          type: 'string',
+          default: ''
+        },
+        routine: {
+          type: 'int',
+          default: 0
+        },
+        // Should be override because too much specific
+        workout_exercises: {
+          type: 'array',
+          default: []
+        }
+      },
+
+      newResource: null,
+      newWorkoutExercises: [],
+
+      workoutExerciseFields: {
+        exercise: {
+          type: 'int',
+          default: 0
+        },
+        order: {
+          type: 'int',
+          default: 0
+        },
+        sets: {
+          type: 'int',
+          default: 5
+        },
+        reps: {
+          type: 'int',
+          default: 10
+        },
+        rest_period: {
+          type: 'int',
+          default: 90
+        },
+      },
     }
   },
-  created() {
-    axios.defaults.headers.common['X-CSRFToken'] = this.$cookies.get('csrftoken')
-
-    axios.interceptors.response.use(null, (error) => {
-      let messages = []
-
-      if (error.response.status == 400) {
-        for (const field in error.response.data) {
-          let msgs = error.response.data[field]
-          for (let msg of msgs) {
-            messages.push({type: 'danger', text: field + ' : ' + msg})
-          }
-        }
-      } else {
-        messages.push({type: 'danger', text: gettext('Oups... Looks like an error occured :/')})
-      }
-
-      this.messages = messages
-      console.log(error)
-
-      return Promise.reject(error)
-    })
-  },
   mounted() {
+    this.reset()
+
     axios
       .get('/api/workouts/')
       .then(response => {
-        this.workouts = response.data.results
+        this.resources = response.data.results
       })
       .finally(() => this.loadingWorkout = false)
 
@@ -71,51 +87,81 @@ let app = new Vue({
       .finally(() => this.loadingExercises = false)
   },
   methods: {
-    refreshWorkouts: function () {
-      axios
-        .get('/api/workouts/')
-        .then(response => {
-          this.workouts = response.data.results
-        })
-    },
-    resetWorkoutModel() {
-      this.new_workout = {
-        name: null,
-        routine: null,
-        exercises: [],
+    _getMessageErrors: baseResourceApp.methods._getMessageErrors,
+    _getFormErrors: baseResourceApp.methods._getFormErrors,
+    hasFormFieldErrors: baseResourceApp.methods.hasFormFieldErrors,
+    refresh: baseResourceApp.methods.refresh,
+
+    _collectFieldValues(resource) {
+      let postData = {}
+      for (const fieldName in this.resourceFields) {
+        postData[fieldName] = resource[fieldName]
       }
+      return postData
     },
-    createWorkout: function (workout) {
-      this.pendingAdd = true
+    _prepareNewWorkoutExercise() {
+      let newWorkoutExercise = {}
+      for (const fieldName in this.workoutExerciseFields) {
+        let field = this.workoutExerciseFields[fieldName]
+        newWorkoutExercise[fieldName] = field.default
+      }
+      return newWorkoutExercise
+    },
+    reset() {
+      let newResource = {}
+
+      for (const fieldName in this.resourceFields) {
+        let field = this.resourceFields[fieldName]
+        newResource[fieldName] = field.default
+      }
+      newResource.workout_exercises = []
+
+      this.newResource = newResource
+    },
+    addWorkoutExercise() {
+      this.newResource.workout_exercises.push(this._prepareNewWorkoutExercise())
+    },
+    removeWorkoutExercise(index) {
+      this.newResource.workout_exercises.splice(index, 1)
+    },
+    createResource(resource) {
+      this.creating = true
 
       axios
-        .post('/api/workouts/', {
-          name: workout.name,
-          routine: workout.routine,
-          exercises: workout.exercises,
-        })
+        .post('/api/' + this.resourcePath + '/', this._collectFieldValues(resource))
         .then(response => {
-          this.resetWorkoutModel()
-          this.refreshWorkouts()
+          $('#modal-create-resource').modal('hide')
+          this.reset()
+          this.formErrors = {}
+          this.refresh()
         })
-        .finally(() => this.pendingAdd = false)
+        .catch(error => {
+          this.modalMessages = this.messages  // @todo, yes ugly fix I know!!
+          this.messages = {}  // @todo, yes ugly fix I know!!
+          // this.modalMessages = this._getMessageErrors(error)
+        })
+        .finally(() => this.creating = false)
     },
-    updateWorkout: function (workout) {
-      this.pendingUpdate = workout.id
+    updateResource(resource) {
+      this.updating = resource.id
 
       axios
-        .patch('/api/workouts/' + workout.id + '/', {
-          name: workout.name
-        })
-        .finally(() => this.pendingUpdate = 0)
-    },
-    deleteWorkout: function (workout) {
-      axios
-        .delete('/api/workouts/' + workout.id + '/')
+        .patch('/api/' + this.resourcePath + '/' + resource.id + '/', this._collectFieldValues(resource))
         .then(response => {
-          $('#modal-delete-' + workout.id).modal('hide')
-          this.refreshWorkouts()
+          this.formErrors = {}
         })
+        .finally(() => this.updating = false)
+    },
+    deleteResource(resource) {
+      this.deleting = true
+
+      axios
+        .delete('/api/' + this.resourcePath + '/' + resource.id + '/')
+        .then(response => {
+          $('#modal-delete-' + resource.id).modal('hide')
+          this.refresh()
+        })
+        .finally(() => this.deleting = false)
     }
   }
-})
+});

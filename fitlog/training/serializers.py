@@ -23,15 +23,32 @@ class ExerciseWorkoutSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = WorkoutExercise
-        fields = ('id', 'exercise', 'order', 'sets', 'reps')
+        fields = ('id', 'exercise', 'order', 'sets', 'reps', 'rest_period')
+
+
+class ExerciseWorkoutDetailSerializer(serializers.ModelSerializer):
+    exercise = ExerciseSerializer()
+
+    class Meta:
+        model = WorkoutExercise
+        fields = ('id', 'exercise', 'order', 'sets', 'reps', 'rest_period')
 
 
 class WorkoutSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Workout
+        fields = ('id', 'name', 'routine', 'workout_exercises')
+
+
+class WorkoutListSerializer(serializers.ModelSerializer):
+    routine = RoutineSerializer()
+    workout_exercises = ExerciseWorkoutDetailSerializer(many=True)
     url = serializers.CharField(source='get_absolute_url', read_only=True)
 
     class Meta:
         model = Workout
-        fields = ('id', 'name', 'routine', 'exercises', 'url')
+        fields = ('id', 'name', 'routine', 'workout_exercises', 'url')
 
 
 class WorkoutSaveSerializer(serializers.ModelSerializer):

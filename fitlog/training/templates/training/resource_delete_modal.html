@@ -15,7 +15,13 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans 'Close' %}</button>
-        <button type="button" class="btn btn-danger" v-on:click="deleteResource(resource)">{% trans 'Delete' %}</button>
+        <button type="button" class="btn btn-danger" v-on:click="deleteResource(resource)" v-bind:disabled="deleting">
+          <span v-if="!deleting" >{% trans 'Delete' %}</span>
+          <span v-if="deleting">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            {% trans 'Wait...' %}
+          </span>
+        </button>
       </div>
     </div>
   </div>

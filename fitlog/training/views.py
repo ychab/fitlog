@@ -1,13 +1,15 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Prefetch
 from django.views import generic
-from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter
 from rest_framework.viewsets import ModelViewSet
 
-from fitlog.training.models import Exercise, Routine, TrainingLog, Workout
+from fitlog.training.models import (
+    Exercise, Routine, TrainingLog, Workout, WorkoutExercise,
+)
 from fitlog.training.serializers import (
     ExerciseSerializer, RoutineSerializer, TrainingLogSerializer,
-    WorkoutSerializer, WorkoutSaveSerializer,
+    WorkoutListSerializer, WorkoutSerializer, WorkoutSaveSerializer,
 )
 
 
@@ -55,7 +57,19 @@ class WorkoutViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.action in ['create', 'partial_update', 'update']:
             return WorkoutSaveSerializer
+        elif self.action == 'list':
+            return WorkoutListSerializer
         return WorkoutSerializer
+
+    def get_queryset(self):
+        return (
+            Workout.objects.all()
+            .select_related('routine')
+            .prefetch_related(Prefetch(
+                'workout_exercises',
+                queryset=WorkoutExercise.objects.all().select_related('exercise').order_by('order', 'exercise__name')
+            ))
+        )
 
 
 class TrainingLogViewSet(ModelViewSet):
