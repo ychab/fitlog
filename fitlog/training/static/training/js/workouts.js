@@ -90,9 +90,38 @@ const vm = new Vue({
     _getMessageErrors: baseResourceApp.methods._getMessageErrors,
     _getFormErrors: baseResourceApp.methods._getFormErrors,
     hasFormFieldErrors: baseResourceApp.methods.hasFormFieldErrors,
-    refresh: baseResourceApp.methods.refresh,
-    _collectFieldValues: baseResourceApp.methods._collectFieldValues,
 
+    refresh: baseResourceApp.methods.refresh,
+
+    _collectFieldValues: baseResourceApp.methods._collectFieldValues,
+    _collectUpdateFieldValues(resource) {
+      // @FIXME for relation, didn't find a better way to remove extra data...
+      let postData = {}
+
+      for (const fieldName in this.resourceFields) {
+        let value = resource[fieldName]
+
+        switch (fieldName) {
+
+          case 'routine':
+            postData[fieldName] = value.id
+            break;
+
+          case 'workout_exercises':
+            postData[fieldName] = value
+            // Special handling for related object... Override by ID only.
+            for (const index in resource[fieldName]) {
+              postData[fieldName][index]['exercise'] = resource[fieldName][index].exercise.id
+            }
+            break;
+
+          default:
+            postData[fieldName] = value
+        }
+      }
+
+      return postData
+    },
     _prepareNewWorkoutExercise() {
       let newWorkoutExercise = {}
       for (const fieldName in this.workoutExerciseFields) {
@@ -147,7 +176,7 @@ const vm = new Vue({
       this.updating = resource.id
 
       axios
-        .patch('/api/' + this.resourcePath + '/' + resource.id + '/', this._collectFieldValues(resource))
+        .patch('/api/' + this.resourcePath + '/' + resource.id + '/', this._collectUpdateFieldValues(resource))
         .then(response => {
           $('#modal-update-' + resource.id).modal('hide')
           this.formErrors = {}
