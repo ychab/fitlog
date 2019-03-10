@@ -27,7 +27,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-if="loadingWorkout || loadingRoutines || loadingExercises">
+          <tr v-if="loadingWorkouts || loadingRoutines || loadingExercises">
             <td colspan="4">
               <div class="d-flex align-items-center">
                 <strong>{% trans 'Loading...' %}</strong>
@@ -35,7 +35,7 @@
               </div>
             </td>
           </tr>
-          <tr v-for="resource in resources" v-if="!loadingWorkout && !loadingRoutines && !loadingExercises">
+          <tr v-for="resource in resources" v-if="!loadingWorkouts && !loadingRoutines && !loadingExercises">
             <td><a v-bind:href="resource.url">[[ resource.name ]]</a></td>
             <td>[[ resource.routine.name ]]</td>
             <td>
@@ -55,7 +55,7 @@
   </div>
 
   {% include 'training/workout_create_modal.html' %}
-{#  {% include 'training/workout_update_modal.html' %}#}
+  {% include 'training/workout_update_modal.html' %}
   {% include 'training/resource_delete_modal.html' %}
 
 </div>

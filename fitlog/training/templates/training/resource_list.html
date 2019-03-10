@@ -30,7 +30,7 @@
               </tr>
               <tr v-if="!loading">
                   <td>
-                    <input class="form-control" v-bind:class="{ 'is-invalid' : 'name' in formErrors }" type="text" required v-model="newResource.name" placeholder="{% trans 'Name' %}"/>
+                    <input class="form-control" v-bind:class="{ 'is-invalid' : 'name' in formErrors }" type="text" v-model="newResource.name" placeholder="{% trans 'Name' %}"/>
                     <div v-if="'name' in formErrors" class="invalid-feedback">
                       <span v-for="msg in formErrors.name">[[ msg ]]</span>
                     </div>

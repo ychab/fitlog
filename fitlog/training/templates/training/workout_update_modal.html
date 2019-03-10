@@ -1,17 +1,17 @@
 {% load i18n %}
 
-<div class="modal fade" tabindex="-1" role="dialog" id="modal-create-resource">
+<div v-for="resource in resources" class="modal fade modal-update-resource" tabindex="-1" role="dialog" v-bind:id="'modal-update-' + resource.id">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{% trans 'Create a workout' %}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title">{% trans 'Update workout' %} [[ resource.name ]]</h5>
+        <button type="button" v-on:click="closeEditModal" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div v-if="!loadingWorkouts" class="modal-body">
 
-        <div v-for="message in modalMessages" v-bind:class="'alert alert-' + message.type + ' alert-dismissible fade show'" role="alert">
+        <div v-for="message in modalMessages[resource.id]" v-bind:class="'alert alert-' + message.type + ' alert-dismissible fade show'" role="alert">
           [[ message.text ]]
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -22,7 +22,7 @@
 
           <div class="form-group">
             <label for="name">{% trans 'Name' %}</label>
-            <input type="text" required id="name" class="form-control" v-bind:class="{ 'is-invalid' : 'name' in formErrors }" v-model="newResource.name" placeholder="{% trans 'Name' %}">
+            <input type="text" required id="name" class="form-control" v-bind:class="{ 'is-invalid' : 'name' in formErrors }" v-model="resource.name" placeholder="{% trans 'Name' %}">
             <div v-if="'name' in formErrors" class="invalid-feedback">
               <span v-for="msg in formErrors.name">[[ msg ]]</span>
             </div>
@@ -30,7 +30,7 @@
 
           <div class="form-group">
             <label for="routine">{% trans 'Routine' %}</label>
-            <select id="routine" class="form-control" v-bind:class="{ 'is-invalid' : 'routine' in formErrors }" required v-model="newResource.routine">
+            <select id="routine" class="form-control" v-bind:class="{ 'is-invalid' : 'routine' in formErrors }" required v-model="resource.routine">
               <option v-for="routine in routines" v-bind:value="routine.id">[[ routine.name ]]</option>
             </select>
             <div v-if="'routine' in formErrors" class="invalid-feedback">
@@ -42,11 +42,11 @@
             <div class="card-header">{% trans 'Exercices' %}</div>
             <div class="card-body">
 
-              <div v-for="(newWorkoutExercise, index) in newResource.workout_exercises" class="form-row">
+              <div v-for="(workoutExercise, index) in resource.workout_exercises" class="form-row">
 
                 <div class="form-group col-2">
                   <label v-bind:for="'exercise-' + index">{% trans 'Exercise' %}</label>
-                  <select v-bind:id="'exercise-' + index" class="form-control" v-bind:class="{ 'is-invalid' : hasFormFieldErrors('workout_exercises.' + index + '.exercise') }" v-model="newWorkoutExercise.exercise">
+                  <select v-bind:id="'exercise-' + index" class="form-control" v-bind:class="{ 'is-invalid' : hasFormFieldErrors('workout_exercises.' + index + '.exercise') }" v-model="workoutExercise.exercise">
                     <option v-for="exercise in exercises" v-bind:value="exercise.id">[[ exercise.name ]]</option>
                   </select>
                   <div class="invalid-feedback" v-if="hasFormFieldErrors('workout_exercises.' + index + '.exercise')">
@@ -56,7 +56,7 @@
 
                 <div class="form-group col-2">
                   <label v-bind:for="'order-' + index">{% trans 'Order' %}</label>
-                  <input class="form-control" type="number" v-bind:id="'order-' + index" v-model.number="newWorkoutExercise.order" v-bind:class="{ 'is-invalid' : hasFormFieldErrors('workout_exercises.' + index + '.order') }" min="0">
+                  <input class="form-control" type="number" v-bind:id="'order-' + index" v-model="workoutExercise.order" v-bind:class="{ 'is-invalid' : hasFormFieldErrors('workout_exercises.' + index + '.order') }" min="0">
                   <div class="invalid-feedback" v-if="hasFormFieldErrors('workout_exercises.' + index + '.order')">
                     <span v-for="msg in formErrors.workout_exercises[index].order">[[ msg ]]</span>
                   </div>
@@ -64,7 +64,7 @@
 
                 <div class="form-group col-2">
                   <label v-bind:for="'sets-' + index">{% trans 'Sets' %}</label>
-                  <input class="form-control" type="number" v-bind:id="'sets-' + index" v-model.number="newWorkoutExercise.sets" v-bind:class="{ 'is-invalid' : hasFormFieldErrors('workout_exercises.' + index + '.sets') }" min="0">
+                  <input class="form-control" type="number" v-bind:id="'sets-' + index" v-model="workoutExercise.sets" v-bind:class="{ 'is-invalid' : hasFormFieldErrors('workout_exercises.' + index + '.sets') }" min="0">
                   <div class="invalid-feedback" v-if="hasFormFieldErrors('workout_exercises.' + index + '.sets')">
                     <span v-for="msg in formErrors.workout_exercises[index].sets">[[ msg ]]</span>
                   </div>
@@ -72,7 +72,7 @@
 
                 <div class="form-group col-2">
                   <label v-bind:for="'reps-' + index">{% trans 'Reps' %}</label>
-                  <input class="form-control" type="number" v-bind:id="'reps-' + index" v-model.number="newWorkoutExercise.reps" v-bind:class="{ 'is-invalid' : hasFormFieldErrors('workout_exercises.' + index + '.reps') }" min="0">
+                  <input class="form-control" type="number" v-bind:id="'reps-' + index" v-model="workoutExercise.reps" v-bind:class="{ 'is-invalid' : hasFormFieldErrors('workout_exercises.' + index + '.reps') }" min="0">
                   <div class="invalid-feedback" v-if="hasFormFieldErrors('workout_exercises.' + index + '.reps')">
                     <span v-for="msg in formErrors.workout_exercises[index].reps">[[ msg ]]</span>
                   </div>
@@ -80,19 +80,19 @@
 
                 <div class="form-group col-2">
                   <label v-bind:for="'rest-period-' + index">{% trans 'Rest period' %}</label>
-                  <input class="form-control" type="number" v-bind:id="'rest-period-' + index" v-model.number="newWorkoutExercise.rest_period" v-bind:class="{ 'is-invalid' : hasFormFieldErrors('workout_exercises.' + index + '.rest_period') }" min="0">
+                  <input class="form-control" type="number" v-bind:id="'rest-period-' + index" v-model="workoutExercise.rest_period" v-bind:class="{ 'is-invalid' : hasFormFieldErrors('workout_exercises.' + index + '.rest_period') }" min="0">
                   <div class="invalid-feedback" v-if="hasFormFieldErrors('workout_exercises.' + index + '.rest_period')">
                     <span v-for="msg in formErrors.workout_exercises[index].rest_period">[[ msg ]]</span>
                   </div>
                 </div>
 
                 <div class="form-group col-2">
-                  <button class="btn btn-link" type="button" v-on:click="removeWorkoutExercise(newResource, index)"><i class="fas fa-minus"></i> {% trans 'Delete' %}</button>
+                  <button class="btn btn-link" type="button" v-on:click="removeWorkoutExercise(resource, index)"><i class="fas fa-minus"></i> {% trans 'Delete' %}</button>
                 </div>
               </div>
 
               <div>
-                <button class="btn btn-link" type="button" v-on:click="addWorkoutExercise(newResource)">
+                <button class="btn btn-link" type="button" v-on:click="addWorkoutExercise(resource)">
                   <i class="fas fa-plus"></i> {% trans 'Add' %}
                 </button>
               </div>
@@ -103,10 +103,10 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans 'Close' %}</button>
-        <button type="button" class="btn btn-primary" v-on:click="createResource(newResource)" v-bind:disabled="creating">
-          <span v-if="!creating" >{% trans 'Create' %}</span>
-          <span v-if="creating">
+        <button type="button" class="btn btn-secondary" v-on:click="closeEditModal" data-dismiss="modal">{% trans 'Close' %}</button>
+        <button type="button" class="btn btn-primary" v-on:click="updateResource(resource)" v-bind:disabled="updating">
+          <span v-if="!updating" >{% trans 'Save' %}</span>
+          <span v-if="updating">
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             {% trans 'Wait...' %}
           </span>

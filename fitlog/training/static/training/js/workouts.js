@@ -1,4 +1,4 @@
-const app = new Vue({
+const vm = new Vue({
   ... baseResourceApp,
   data() {
     return {
@@ -6,7 +6,7 @@ const app = new Vue({
       formErrors: {},
       modalMessages: {},
 
-      loadingWorkout: true,
+      loadingWorkouts: true,
       loadingRoutines: true,
       loadingExercises: true,
 
@@ -70,7 +70,7 @@ const app = new Vue({
       .then(response => {
         this.resources = response.data.results
       })
-      .finally(() => this.loadingWorkout = false)
+      .finally(() => this.loadingWorkouts = false)
 
     axios
       .get('/api/routines/')
@@ -91,14 +91,8 @@ const app = new Vue({
     _getFormErrors: baseResourceApp.methods._getFormErrors,
     hasFormFieldErrors: baseResourceApp.methods.hasFormFieldErrors,
     refresh: baseResourceApp.methods.refresh,
+    _collectFieldValues: baseResourceApp.methods._collectFieldValues,
 
-    _collectFieldValues(resource) {
-      let postData = {}
-      for (const fieldName in this.resourceFields) {
-        postData[fieldName] = resource[fieldName]
-      }
-      return postData
-    },
     _prepareNewWorkoutExercise() {
       let newWorkoutExercise = {}
       for (const fieldName in this.workoutExerciseFields) {
@@ -118,11 +112,18 @@ const app = new Vue({
 
       this.newResource = newResource
     },
-    addWorkoutExercise() {
-      this.newResource.workout_exercises.push(this._prepareNewWorkoutExercise())
+    closeEditModal(event) {
+      // @FIXME - better to catch jQuery event modal... Try with watcher and ref
+      // but not working anyway... tired with all that bullshits.
+      this.messages = {}
+      this.formErrors = {}
+      this.refresh()
     },
-    removeWorkoutExercise(index) {
-      this.newResource.workout_exercises.splice(index, 1)
+    addWorkoutExercise(resource) {
+      resource.workout_exercises.push(this._prepareNewWorkoutExercise())
+    },
+    removeWorkoutExercise(resource, index) {
+      resource.workout_exercises.splice(index, 1)
     },
     createResource(resource) {
       this.creating = true
@@ -133,12 +134,12 @@ const app = new Vue({
           $('#modal-create-resource').modal('hide')
           this.reset()
           this.formErrors = {}
+          this.modalMessages = {}
           this.refresh()
         })
         .catch(error => {
-          this.modalMessages = this.messages  // @todo, yes ugly fix I know!!
+          this.modalMessages = this.messages
           this.messages = {}  // @todo, yes ugly fix I know!!
-          // this.modalMessages = this._getMessageErrors(error)
         })
         .finally(() => this.creating = false)
     },
@@ -148,7 +149,14 @@ const app = new Vue({
       axios
         .patch('/api/' + this.resourcePath + '/' + resource.id + '/', this._collectFieldValues(resource))
         .then(response => {
+          $('#modal-update-' + resource.id).modal('hide')
           this.formErrors = {}
+          this.modalMessages = {}
+          this.refresh()
+        })
+        .catch(error => {
+          this.modalMessages = this.messages
+          this.messages = {}  // @todo, yes ugly fix I know!!
         })
         .finally(() => this.updating = false)
     },
