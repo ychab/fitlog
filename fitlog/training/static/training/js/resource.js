@@ -5,6 +5,7 @@ const baseResourceApp = {
     return {
       messages: {},
       formErrors: {},
+      modalMessages: {},
 
       loading: true,
       creating: false,
@@ -102,6 +103,12 @@ const baseResourceApp = {
           this.resources = response.data.results
         })
         .finally(() => this.loading = false)
+    },
+    closeModal() {
+      this.messages = {}
+      this.formErrors = {}
+      this.reset()
+      this.refresh()
     },
     createResource(resource) {
       this.creating = true

@@ -2,21 +2,14 @@ const vm = new Vue({
   ... baseResourceApp,
   data() {
     return {
-      messages: {},
-      formErrors: {},
-      modalMessages: {},
+      ... baseResourceApp.data(),
 
       loadingWorkouts: true,
       loadingRoutines: true,
       loadingExercises: true,
 
-      resources: [],
       routines: [],
       exercises: [],
-
-      creating: false,
-      updating: false,
-      deleting: false,
 
       resourcePath: 'workouts',
       resourceFields: {
@@ -35,9 +28,7 @@ const vm = new Vue({
         }
       },
 
-      newResource: null,
       newWorkoutExercises: [],
-
       workoutExerciseFields: {
         exercise: {
           type: 'int',
@@ -141,13 +132,6 @@ const vm = new Vue({
 
       this.newResource = newResource
     },
-    closeEditModal(event) {
-      // @FIXME - better to catch jQuery event modal... Try with watcher and ref
-      // but not working anyway... tired with all that bullshits.
-      this.messages = {}
-      this.formErrors = {}
-      this.refresh()
-    },
     addWorkoutExercise(resource) {
       resource.workout_exercises.push(this._prepareNewWorkoutExercise())
     },
@@ -202,3 +186,7 @@ const vm = new Vue({
     }
   }
 });
+
+$('#modal-create-resource', '.modal-update-resource').on('hidden.bs.modal', function (e) {
+  vm.$root.closeModal();
+})

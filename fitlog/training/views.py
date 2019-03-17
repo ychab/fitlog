@@ -1,35 +1,35 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Prefetch
 from django.views import generic
+
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.viewsets import ModelViewSet
 
-from fitlog.training.models import (
-    Exercise, Routine, TrainingLog, Workout, WorkoutExercise,
+from .models import (
+    Exercise, Routine, Training, Workout, WorkoutExercise,
+    TrainingSet)
+from .serializers import (
+    ExerciseSerializer, RoutineSerializer, TrainingListSerializer,
+    TrainingSaveSerializer, TrainingSerializer,
+    WorkoutDetailSerializer, WorkoutSerializer, WorkoutSaveSerializer,
 )
-from fitlog.training.serializers import (
-    ExerciseSerializer, RoutineSerializer, TrainingLogSerializer,
-    WorkoutListSerializer, WorkoutSerializer, WorkoutSaveSerializer,
-)
 
 
-class RoutineListView(LoginRequiredMixin, generic.ListView):
-    model = Routine
-    queryset = Routine.objects.all()
+class RoutineListView(LoginRequiredMixin, generic.TemplateView):
+    template_name = 'training/routine_list.html'
 
 
-class ExerciseListView(LoginRequiredMixin, generic.ListView):
-    model = Exercise
-    queryset = Exercise.objects.all()
+class ExerciseListView(LoginRequiredMixin, generic.TemplateView):
+    template_name = 'training/exercise_list.html'
 
 
-class WorkoutListView(LoginRequiredMixin, generic.ListView):
-    model = Workout
-    queryset = Workout.objects.all()
+class WorkoutListView(LoginRequiredMixin, generic.TemplateView):
+    template_name = 'training/workout_list.html'
 
 
-class WorkoutDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Workout
+class TrainingListView(LoginRequiredMixin, generic.TemplateView):
+    template_name = 'training/training_list.html'
 
 
 class RoutineViewSet(ModelViewSet):
@@ -57,8 +57,8 @@ class WorkoutViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.action in ['create', 'partial_update', 'update']:
             return WorkoutSaveSerializer
-        elif self.action == 'list':
-            return WorkoutListSerializer
+        elif self.action in ['list', 'retrieve']:
+            return WorkoutDetailSerializer
         return WorkoutSerializer
 
     def get_queryset(self):
@@ -72,6 +72,25 @@ class WorkoutViewSet(ModelViewSet):
         )
 
 
-class TrainingLogViewSet(ModelViewSet):
-    queryset = TrainingLog.objects.all()
-    serializer_class = TrainingLogSerializer
+class TrainingViewSet(ModelViewSet):
+    filter_backends = (DjangoFilterBackend, OrderingFilter,)
+    filterset_fields = ['workout']
+    ordering_fields = ('date', 'training_sets__exercice__name', 'training_sets__set')
+    ordering = ('-date',)
+
+    def get_serializer_class(self):
+        if self.action in ['create', 'partial_update', 'update']:
+            return TrainingSaveSerializer
+        elif self.action == 'list':
+            return TrainingListSerializer
+        return TrainingSerializer
+
+    def get_queryset(self):
+        return (
+            Training.objects.all()
+            .select_related('workout')
+            .prefetch_related(Prefetch(
+                'training_sets',
+                queryset=TrainingSet.objects.all().select_related('exercise').order_by('exercise__name', 'set')
+            ))
+        )

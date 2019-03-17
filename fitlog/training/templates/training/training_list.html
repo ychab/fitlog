@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% load i18n static %}
 
-{% block title %}{% trans 'Workouts' %}{% endblock %}
+{% block title %}{% trans 'Trainings' %}{% endblock %}
 {% block content %}
 <div class="card mb-3">
 
   <div class="card-header">
     <i class="fas fa-table"></i>
-    {% trans 'Workouts' %}
-    <button v-if="!loadingRoutines && !loadingExercises"
+    {% trans 'Trainings' %}
+    <button v-if="!loadingTrainings"
             type="button"
             data-toggle="modal" data-target="#modal-create-resource"
             class="btn btn-link"
@@ -20,7 +20,7 @@
   <div class="card-body">
     <div class="table-responsive">
 
-      <div v-if="loadingWorkouts || loadingRoutines || loadingExercises" class="p-2">
+      <div v-if="loadingTrainings" class="p-2">
         <div class="d-flex align-items-center">
           <strong>{% trans 'Loading...' %}</strong>
           <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
@@ -30,22 +30,26 @@
       <table class="table table-bordered" width="100%" cellspacing="0">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Routine</th>
-            <th>Exercises (sets / reps / rest)</th>
+            <th>Date</th>
+            <th>Workout</th>
+            <th>Sets</th>
+            <th>Reps</th>
+            <th>Weights</th>
+            <th>Rest</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="resource in resources" v-if="!loadingWorkouts && !loadingRoutines && !loadingExercises">
-            <td>[[ resource.name ]]</td>
-            <td>[[ resource.routine.name ]]</td>
+          <tr v-for="resource in resources" v-if="!loadingTrainings">
+            <td>[[ resource.date ]]</td>
+            <td v-if="resource.workout">[[ resource.workout.name ]]</td>
+            <td v-if="!resource.workout"></td>
+            <td>[[ resource.sets ]]</td>
+            <td>[[ resource.reps ]]</td>
+            <td>[[ resource.weights ]]</td>
+            <td>[[ resource.rest_avg ]]</td>
             <td>
-              <ul v-for="workout_exercise in resource.workout_exercises">
-                <li>[[ workout_exercise.exercise.name ]]: [[ workout_exercise.sets ]] / [[ workout_exercise.reps ]] / [[ workout_exercise.rest_period ]]</li>
-              </ul>
-            </td>
-            <td>
+              <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target="'#modal-detail-' + resource.id"><i class="fas fa-eye"></i></button>
               <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target="'#modal-update-' + resource.id"><i class="fas fa-save"></i></button>
               <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target="'#modal-delete-' + resource.id"><i class="fas fa-trash"></i></button>
             </td>
@@ -56,8 +60,9 @@
     </div>
   </div>
 
-  {% include 'training/workout_create_modal.html' %}
-  {% include 'training/workout_update_modal.html' %}
+  {% include 'training/training_create_modal.html' %}
+{#  {% include 'training/training_detail_modal.html' %}#}
+{#  {% include 'training/training_update_modal.html' %}#}
   {% include 'training/resource_delete_modal.html' %}
 
 </div>
@@ -65,5 +70,5 @@
 
 {% block extrabody %}
 <script src="{% static 'training/js/resource.js' %}"></script>
-<script src="{% static 'training/js/workouts.js' %}"></script>
+<script src="{% static 'training/js/trainings.js' %}"></script>
 {% endblock %}

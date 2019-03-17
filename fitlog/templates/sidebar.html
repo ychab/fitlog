@@ -9,16 +9,23 @@
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <i class="fas fa-fw fa-dumbbell"></i>
-      <span>{% trans 'Workouts' %}</span>
+      <span>{% trans 'Trainings' %}</span>
     </a>
     <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-      <a class="dropdown-item" href="{% url 'trainings:workout_list' %}">{% trans 'List' %}</a>
+      <a class="dropdown-item" href="{% url 'trainings:training_list' %}">{% trans 'List' %}</a>
       <div class="dropdown-divider"></div>
-      <h6 class="dropdown-header">{% trans 'Workouts' %}</h6>
+      <h6 class="dropdown-header">{% trans 'Add for' %}</h6>
       {% for workout in workouts %}
-      <a class="dropdown-item" href="{% url 'trainings:workout_detail' workout.pk %}">{{ workout.name }}</a>
+      <a class="dropdown-item" href="{% url 'trainings:training_list' %}?workoutId={{ workout.pk }}">{{ workout.name }}</a>
       {% endfor %}
     </div>
+  </li>
+
+  <li class="nav-item{% if request.get_full_path == workout_list_url %} active{% endif %}">
+    <a class="nav-link" href="{% url 'trainings:workout_list' %}">
+      <i class="fas fa-fw fa-list-ul"></i>
+      <span>{% trans 'Workouts' %}</span>
+    </a>
   </li>
 
   <li class="nav-item{% if request.get_full_path == exercise_list_url %} active{% endif %}">

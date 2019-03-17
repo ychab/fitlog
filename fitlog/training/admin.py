@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Exercise, Routine, TrainingLog, Workout
+from .models import Exercise, Routine, Training, TrainingSet, Workout
 
 
 @admin.register(Routine)
@@ -44,19 +44,33 @@ class WorkoutAdmin(admin.ModelAdmin):
     exercises_suggestions.short_description = _('Exercises')
 
 
-@admin.register(TrainingLog)
-class TrainingLogAdmin(admin.ModelAdmin):
+@admin.register(Training)
+class TrainingAdmin(admin.ModelAdmin):
     list_display = [
         'id',
         'workout',
-        'exercise',
         'date',
-        'set',
-        'reps',
     ]
     list_display_links = ['id']
     list_filter = ['date']
-    list_select_related = ['workout', 'exercise']
+    list_select_related = ['workout']
     ordering = ['-date']
     date_hierarchy = 'date'
+
+
+@admin.register(TrainingSet)
+class TrainingSetAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'training',
+        'exercise',
+        'set',
+        'reps',
+        'weight',
+        'rest_period',
+        'tempo',
+    ]
+    list_display_links = ['id']
+    list_select_related = ['training', 'exercise']
+    ordering = ['-training__date']
     search_fields = ['exercise__name']

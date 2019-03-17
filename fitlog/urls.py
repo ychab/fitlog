@@ -11,13 +11,13 @@ from rest_framework_swagger.views import get_swagger_view
 
 from fitlog.core.views import HomePageRedirectView
 from fitlog.training.views import (
-    ExerciseViewSet, RoutineViewSet, TrainingLogViewSet, WorkoutViewSet,
+    ExerciseViewSet, RoutineViewSet, TrainingViewSet, WorkoutViewSet,
 )
 
 router = DefaultRouter()
 router.register('exercises', ExerciseViewSet, base_name='exercise')
 router.register('routines', RoutineViewSet, base_name='routine')
-router.register('trainings', TrainingLogViewSet, base_name='training')
+router.register('trainings', TrainingViewSet, base_name='training')
 router.register('workouts', WorkoutViewSet, base_name='workout')
 
 api_urls = router.urls

@@ -2,7 +2,9 @@ from django.db import transaction
 
 from rest_framework import serializers
 
-from .models import Exercise, Routine, TrainingLog, Workout, WorkoutExercise
+from .models import (
+    Exercise, Routine, Training, TrainingSet, Workout, WorkoutExercise,
+)
 
 
 class RoutineSerializer(serializers.ModelSerializer):
@@ -41,14 +43,20 @@ class WorkoutSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'routine', 'workout_exercises')
 
 
-class WorkoutListSerializer(serializers.ModelSerializer):
-    routine = RoutineSerializer()
-    workout_exercises = ExerciseWorkoutDetailSerializer(many=True)
-    url = serializers.CharField(source='get_absolute_url', read_only=True)
+class WorkoutMinimalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Workout
-        fields = ('id', 'name', 'routine', 'workout_exercises', 'url')
+        fields = ('id', 'name')
+
+
+class WorkoutDetailSerializer(serializers.ModelSerializer):
+    routine = RoutineSerializer()
+    workout_exercises = ExerciseWorkoutDetailSerializer(many=True)
+
+    class Meta:
+        model = Workout
+        fields = ('id', 'name', 'routine', 'workout_exercises')
 
 
 class WorkoutSaveSerializer(serializers.ModelSerializer):
@@ -82,8 +90,64 @@ class WorkoutSaveSerializer(serializers.ModelSerializer):
         return instance
 
 
-class TrainingLogSerializer(serializers.ModelSerializer):
+class TrainingSetSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = TrainingLog
-        fields = ('id', 'exercise', 'workout', 'date', 'set', 'reps', 'weight')
+        model = TrainingSet
+        fields = ('id', 'exercise', 'set', 'reps', 'weight', 'rest_period', 'tempo')
+
+
+class TrainingSetDetailSerializer(serializers.ModelSerializer):
+    exercise = ExerciseSerializer()
+
+    class Meta:
+        model = TrainingSet
+        fields = ('id', 'exercise', 'set', 'reps', 'weight', 'rest_period', 'tempo')
+
+
+class TrainingSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Training
+        fields = ('id', 'workout', 'date')
+
+
+class TrainingListSerializer(serializers.ModelSerializer):
+    workout = WorkoutDetailSerializer()
+
+    class Meta:
+        model = Training
+        fields = (
+            'id', 'date', 'workout', 'sets', 'reps', 'weights', 'rest_avg',
+        )
+
+
+class TrainingSaveSerializer(serializers.ModelSerializer):
+    training_sets = TrainingSetSerializer(many=True)
+
+    class Meta:
+        model = Training
+        fields = ('id', 'date', 'workout', 'training_sets')
+
+    def create_training_sets(self, instance, training_sets_data):
+        for sets_data in training_sets_data:
+            sets_data['training'] = instance
+            TrainingSet.objects.create(**sets_data)
+
+    def create(self, validated_data):
+        training_sets_data = validated_data.pop('training_sets')
+        training = super().create(validated_data)
+        self.create_training_sets(training, training_sets_data)
+        return training
+
+    def update(self, instance, validated_data):
+        training_sets_data = validated_data.pop('training_sets')
+        instance = super().update(instance, validated_data)
+
+        with transaction.atomic():
+            # More simple to remove all and re-add all because we need to add new
+            # exercise, remove old, update exercise with new sets and reps, etc.
+            TrainingSet.objects.filter(training=instance).delete()
+            self.create_training_sets(instance, training_sets_data)
+
+        return instance
