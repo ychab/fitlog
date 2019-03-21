@@ -11,4 +11,5 @@ def alert_type(value):
         return 'danger'
     elif value == 'debug':
         return 'secondary'
-    return tag
+    else:
+        return tag

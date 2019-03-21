@@ -2,7 +2,10 @@ from django.db import transaction
 
 from rest_framework import serializers
 
-from .models import Exercise, Routine, TrainingLog, Workout, WorkoutExercise
+from .models import (
+    Exercise, Routine, Training, TrainingExercise, TrainingExerciseSet, Workout,
+    WorkoutExercise,
+)
 
 
 class RoutineSerializer(serializers.ModelSerializer):
@@ -41,14 +44,14 @@ class WorkoutSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'routine', 'workout_exercises')
 
 
-class WorkoutListSerializer(serializers.ModelSerializer):
+
+class WorkoutDetailSerializer(serializers.ModelSerializer):
     routine = RoutineSerializer()
     workout_exercises = ExerciseWorkoutDetailSerializer(many=True)
-    url = serializers.CharField(source='get_absolute_url', read_only=True)
 
     class Meta:
         model = Workout
-        fields = ('id', 'name', 'routine', 'workout_exercises', 'url')
+        fields = ('id', 'name', 'routine', 'workout_exercises')
 
 
 class WorkoutSaveSerializer(serializers.ModelSerializer):
@@ -82,8 +85,80 @@ class WorkoutSaveSerializer(serializers.ModelSerializer):
         return instance
 
 
-class TrainingLogSerializer(serializers.ModelSerializer):
+class TrainingExerciseSetSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = TrainingLog
-        fields = ('id', 'exercise', 'workout', 'date', 'set', 'reps', 'weight')
+        model = TrainingExerciseSet
+        fields = ('id', 'set', 'reps', 'weight', 'rest_period', 'tempo')
+
+
+class TrainingExerciseSerializer(serializers.ModelSerializer):
+    training_exercise_sets = TrainingExerciseSetSerializer(many=True)
+
+    class Meta:
+        model = TrainingExercise
+        fields = ('id', 'exercise', 'training_exercise_sets')
+
+
+# class TrainingExerciseDetailSerializer(serializers.ModelSerializer):
+#     exercise = ExerciseSerializer()
+#     training_exercise_sets = TrainingExerciseSetSerializer(many=True)
+#
+#     class Meta:
+#         model = TrainingExercise
+#         fields = ('id', 'exercise', 'training_exercise_sets')
+
+
+class TrainingSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Training
+        fields = ('id', 'workout', 'date')
+
+
+class TrainingListSerializer(serializers.ModelSerializer):
+    workout = WorkoutDetailSerializer()
+
+    class Meta:
+        model = Training
+        fields = (
+            'id', 'date', 'workout', 'sets', 'reps', 'weights', 'rest_avg',
+        )
+
+
+class TrainingSaveSerializer(serializers.ModelSerializer):
+    training_exercises = TrainingExerciseSerializer(many=True)
+
+    class Meta:
+        model = Training
+        fields = ('id', 'date', 'workout', 'training_sets')
+
+    def create_training_exercises(self, instance, training_exercises_data):
+
+        for training_exercise_data in training_exercises_data:
+            sets_data = training_exercise_data.pop('training_exercise_sets')
+
+            training_exercise_data['training'] = instance
+            training_exercise = TrainingExercise.objects.create(**training_exercise_data)
+
+            for set_data in sets_data:
+                set_data['training_exercise'] = training_exercise
+                TrainingExerciseSet.objects.create(**set_data)
+
+    def create(self, validated_data):
+        training_exercises_data = validated_data.pop('training_exercises')
+        training = super().create(validated_data)
+        self.create_training_exercises(training, training_exercises_data)
+        return training
+
+    def update(self, instance, validated_data):
+        training_exercises_data = validated_data.pop('training_exercises')
+        instance = super().update(instance, validated_data)
+
+        with transaction.atomic():
+            TrainingExercise.objects.filter(training=instance).delete()
+            # Cascade delete is also trigger with queryset.delete() method??
+            TrainingExerciseSet.objects.filter(training_exercise__training=instance).delete()
+            self.create_training_exercises(instance, training_exercises_data)
+
+        return instance

@@ -5,7 +5,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">{% trans 'Update workout' %} [[ resource.name ]]</h5>
-        <button type="button" v-on:click="closeEditModal" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -103,7 +103,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" v-on:click="closeEditModal" data-dismiss="modal">{% trans 'Close' %}</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans 'Close' %}</button>
         <button type="button" class="btn btn-primary" v-on:click="updateResource(resource)" v-bind:disabled="updating">
           <span v-if="!updating" >{% trans 'Save' %}</span>
           <span v-if="updating">

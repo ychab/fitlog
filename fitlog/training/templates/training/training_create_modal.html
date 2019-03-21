@@ -1,0 +1,159 @@
+{% load i18n %}
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-create-resource">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{% trans 'Log a training' %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div v-if="!loadingTrainings && !loadingWorkouts && !loadingExercises" class="modal-body">
+
+        <div v-for="message in modalMessages" v-bind:class="'alert alert-' + message.type + ' alert-dismissible fade show'" role="alert">
+          [[ message.text ]]
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <form v-on:submit.prevent="onSubmit">
+
+          {# Date field #}
+          <div class="form-group">
+            <label for="date">{% trans 'Date' %}</label>
+            <input type="date" required id="date" class="form-control" placeholder="{% trans 'Date' %}"
+                   v-model="newResource.date"
+                   v-bind:class="{ 'is-invalid' : 'date' in formErrors }">
+            <div v-if="'date' in formErrors" class="invalid-feedback">
+              <span v-for="msg in formErrors.date">[[ msg ]]</span>
+            </div>
+          </div>
+
+          {# Workout field #}
+          <div class="form-group">
+            <label for="workout">{% trans 'Workout' %}</label>
+            <select id="workout" class="form-control"
+                    v-model="newResource.workout"
+                    v-bind:class="{ 'is-invalid' : 'workout' in formErrors }"
+                    v-on:change="workoutSelectorChange()">
+              <option value="">--- {% trans 'Freestyle' %} ---</option>
+              <option v-for="workout in workouts" v-bind:value="workout.id">[[ workout.name ]]</option>
+            </select>
+            <div v-if="'workout' in formErrors" class="invalid-feedback">
+              <span v-for="msg in formErrors.workout">[[ msg ]]</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">{% trans 'Exercises sets' %}</div>
+            <div class="card-body">
+
+              <div class="accordion" id="accordionTrainingExercices">
+                <div v-for="trainingExercice, trainingExerciceIndex) in newResource.training_exercises" class="card">
+
+                  <div class="card-header" v-bind:id="'heading-set-' + trainingExercice.exercise.id">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link" type="button"
+                              data-toggle="collapse"
+                              v-bind:data-target="'#collapse-set-' + trainingExercice.exercise.id"
+                              aria-expanded="true" v-bind:aria-controls="'collapse-set-' + trainingExercice.exercise.id">
+                        [[ trainingExercice.exercise.name ]]
+                      </button>
+                      <button class="btn btn-link float-right" type="button" v-on:click="removeTrainingExercise(trainingExerciceIndex)">
+                        <i class="fas fa-minus"></i> {% trans 'Remove' %}
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div class="collapse show"
+                       v-bind:id="'collapse-set-' + trainingExercice.exercise.id"
+                       aria-labelledby="'heading-set-' + trainingExercice.exercise.id"
+                       data-parent="#accordionTrainingExercices">
+                    <div class="card-body">
+                      <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                          <tr>
+                            <th>Reps</th>
+                            <th>Weight</th>
+                            <th>Rest</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(set, setIndex) in trainingExercice.training_exercise_sets">
+                            <td>
+                              <input class="form-control" type="number"
+                                     v-bind:id="'exercise-' + trainingExercice.exercise.id + '-reps-' + setIndex"
+                                     v-model.number="set.reps"
+                                     min="1">
+                            </td>
+                            <td>
+                              <input class="form-control" type="number"
+                                     v-bind:id="'exercise-' + trainingExercice.exercise.id + '-weight-' + setIndex"
+                                     v-model.number="set.weight"
+                                     min="1">
+                            </td>
+                            <td>
+                              <input class="form-control" type="number"
+                                     v-bind:id="'exercise-' + trainingExercice.exercise.id + '-rest-' + setIndex"
+                                     v-model.number="set.rest_period"
+                                     min="1">
+                            </td>
+                            <td>
+                              <button class="btn btn-link" type="button" v-on:click="removeTrainingExerciseSet(trainingExercice.exercise.id, setIndex)">
+                                <i class="fas fa-minus"></i> {% trans 'Remove' %}
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                      <button class="btn btn-link" type="button" v-on:click="addTrainingExerciseSet(exerciseSet.exercise.id)">
+                        <i class="fas fa-plus"></i> {% trans 'Add set' %}
+                      </button>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col py-3 px-lg-5 border">
+                <div class="row">
+                  <div class="col col-2">
+                    <select class="form-control"
+                            v-bind:class="{ 'is-invalid' : 'newExerciseSelector' in formErrors }"
+                            id="exercise-selector"
+                            v-model="newExerciseSelector">
+                      <option v-for="(exerciseName, exerciseId) in newExerciseChoices" v-bind:value="exerciseId">[[ exerciseName ]]</option>
+                    </select>
+                    <div v-if="'newExerciseSelector' in formErrors" class="invalid-feedback">
+                      <span v-for="msg in formErrors.newExerciseSelector">[[ msg ]]</span>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <button class="btn btn-link float-left" type="button" v-on:click="addTrainingExercise(newExerciseSelector)">
+                      <i class="fas fa-plus"></i> {% trans 'Add exercise' %}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans 'Close' %}</button>
+        <button type="button" class="btn btn-primary" v-on:click="createResource(newResource)" v-bind:disabled="creating">
+          <span v-if="!creating" >{% trans 'Create' %}</span>
+          <span v-if="creating">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            {% trans 'Wait...' %}
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
