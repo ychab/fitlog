@@ -28,8 +28,8 @@ const vm = new Vue({
       workouts: [],
 
       newResource: null,
-      newExerciseSelector: null,
-      newExerciseChoices: null,
+      exerciseSelector: null,
+      exerciseChoices: null,
       trainingExerciseFields: {
         exercise: {
           type: 'int',
@@ -92,13 +92,23 @@ const vm = new Vue({
       for (let exercise of this.exercises) {
         if (exercise.id == exerciseId) {
           exerciseName = exercise.name
-          break;
+          break
         }
       }
       return exerciseName
     },
+    _getWorkoutName(workoutId) {
+      let workoutName = null
+      for (let workout of this.workouts) {
+        if (workout.id == workoutId) {
+          workoutName = workout.name
+          break
+        }
+      }
+      return workoutName
+    },
 
-    _prepareNewTrainingExercise() {
+    _prepareTrainingExercise() {
       let newExercise = {}
       for (const fieldName in this.trainingExerciseFields) {
         let field = this.trainingExerciseFields[fieldName]
@@ -110,35 +120,35 @@ const vm = new Vue({
       }
       return newExercise
     },
-    addTrainingExercise(exerciseId) {
+    addTrainingExercise(resource, exerciseId) {
       let exerciseName = this._getExerciceName(exerciseId)
 
       if (!exerciseId || !exerciseName) {
         this.formErrors = {
-          'newExerciseSelector': [gettext('Please select an exercise')]
+          'exerciseSelector': [gettext('Please select an exercise')]
         }
       } else {
-        let trainingExercise = this._prepareNewTrainingExercise()
+        let trainingExercise = this._prepareTrainingExercise()
         trainingExercise.exercise = exerciseId
-        this.newResource.training_exercises.push(trainingExercise)
+        resource.training_exercises.push(trainingExercise)
 
-        delete this.newExerciseChoices[exerciseId]
+        delete this.exerciseChoices[exerciseId]
 
-        this.newExerciseSelector = null
+        this.exerciseSelector = null
         this.formErrors = {}
       }
     },
-    removeTrainingExercise(key) {
-      let exerciseId = this.newResource.training_exercises[key].exercise
-      vm.$set(this.newExerciseChoices, exerciseId, this._getExerciceName(exerciseId))
-      vm.$delete(this.newResource.training_exercises, key)
+    removeTrainingExercise(resource, key) {
+      let exerciseId = resource.training_exercises[key].exercise
+      vm.$set(this.exerciseChoices, exerciseId, this._getExerciceName(exerciseId))
+      vm.$delete(resource.training_exercises, key)
       this.formErrors = {}
     },
 
-    _getTrainingExerciseIndex(exerciseId) {
+    _getTrainingExerciseIndex(resource, exerciseId) {
       let trainingExerciseIndex = null
-      for (let i in this.newResource.training_exercises) {
-        let trainingExercise = this.newResource.training_exercises[i]
+      for (let i in resource.training_exercises) {
+        let trainingExercise = resource.training_exercises[i]
         if (trainingExercise.exercise === exerciseId) {
           trainingExerciseIndex = i
           break
@@ -146,7 +156,7 @@ const vm = new Vue({
       }
       return trainingExerciseIndex
     },
-    _prepareNewTrainingExerciseSet() {
+    _prepareTrainingExerciseSet() {
       let newSet = {}
       for (const fieldName in this.trainingExerciseSetFields) {
         let field = this.trainingExerciseSetFields[fieldName]
@@ -154,27 +164,27 @@ const vm = new Vue({
       }
       return newSet
     },
-    addTrainingExerciseSet(exerciseId) {
-      let trainingExerciseIndex = this._getTrainingExerciseIndex(exerciseId)
-      let set = this._prepareNewTrainingExerciseSet()
-      set.order = this.newResource.training_exercises[trainingExerciseIndex].training_exercise_sets.length + 1
-      this.newResource.training_exercises[trainingExerciseIndex].training_exercise_sets.push(set)
+    addTrainingExerciseSet(resource, exerciseId) {
+      let trainingExerciseIndex = this._getTrainingExerciseIndex(resource, exerciseId)
+      let set = this._prepareTrainingExerciseSet()
+      set.order = resource.training_exercises[trainingExerciseIndex].training_exercise_sets.length + 1
+      resource.training_exercises[trainingExerciseIndex].training_exercise_sets.push(set)
     },
-    removeTrainingExerciseSet(exerciseId, index) {
-      let trainingExerciseIndex = this._getTrainingExerciseIndex(exerciseId)
-      this.newResource.training_exercises[trainingExerciseIndex].training_exercise_sets.splice(index, 1)
+    removeTrainingExerciseSet(resource, exerciseId, index) {
+      let trainingExerciseIndex = this._getTrainingExerciseIndex(resource, exerciseId)
+      resource.training_exercises[trainingExerciseIndex].training_exercise_sets.splice(index, 1)
     },
 
-    workoutSelectorChange() {
-      this.newResource.training_exercises = []
-      this.newExerciseSelector = null
+    workoutSelectorChange(resource) {
+      resource.training_exercises = []
+      this.exerciseSelector = null
       this._resetExerciseChoices()
       this.formErrors = {}
 
       // Retrieve the workout object if one selected
       let workout = null
       for (let w of this.workouts) {
-        if (w.id == this.newResource.workout) {
+        if (w.id == resource.workout) {
           workout = w;
           break;
         }
@@ -193,12 +203,12 @@ const vm = new Vue({
       // Iterate over ordered workout exercises template
       for (let workout_exercise of workout_exercises) {
         // Build the training exercise
-        let newTrainingExercise = this._prepareNewTrainingExercise()
-        newTrainingExercise['exercise'] = workout_exercise.exercise.id
+        let trainingExercise = this._prepareTrainingExercise()
+        trainingExercise['exercise'] = workout_exercise.exercise.id
 
         // Then for each training exercise, create the sets
         for (let i = 0; i < workout_exercise.sets; i++) {
-          newTrainingExercise.training_exercise_sets.push({
+          trainingExercise.training_exercise_sets.push({
             order: i + 1,
             reps: workout_exercise.reps,
             weight: null,
@@ -206,7 +216,7 @@ const vm = new Vue({
           })
         }
 
-        this.newResource.training_exercises.push(newTrainingExercise)
+        resource.training_exercises.push(trainingExercise)
       }
     },
 
@@ -215,7 +225,7 @@ const vm = new Vue({
       for (let exercise of this.exercises) {
         exerciseChoices[exercise.id] = exercise.name
       }
-      this.newExerciseChoices = exerciseChoices
+      this.exerciseChoices = exerciseChoices
     },
     _resetResource() {
       let newResource = {}
@@ -231,7 +241,7 @@ const vm = new Vue({
     reset() {
       this._resetExerciseChoices()
       this._resetResource()
-      this.newExerciseSelector = null
+      this.exerciseSelector = null
     },
 
     createResource(resource) {
@@ -256,7 +266,7 @@ const vm = new Vue({
       this.updating = resource.id
 
       axios
-        .patch('/api/' + this.resourcePath + '/' + resource.id + '/', this._collectUpdateFieldValues(resource))
+        .patch('/api/' + this.resourcePath + '/' + resource.id + '/', this._collectFieldValues(resource))
         .then(response => {
           $('#modal-update-' + resource.id).modal('hide')
           this.formErrors = {}
@@ -286,3 +296,5 @@ const vm = new Vue({
 $('#modal-create-resource').on('hidden.bs.modal', function (e) {
   vm.$root.closeModal();
 })
+
+// @todo - fixme for edit modal, dynamically added and thus, cannot be bind...

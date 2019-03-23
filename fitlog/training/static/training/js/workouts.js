@@ -82,6 +82,8 @@ const vm = new Vue({
 
     _collectUpdateFieldValues(resource) {
       // @FIXME for relation, didn't find a better way to remove extra data...
+      // @TODO - to fix it, do like in training "component": ust returns ID from
+      //  back and add method helper to found item name...
       let postData = {}
 
       for (const fieldName in this.resourceFields) {
@@ -184,6 +186,8 @@ const vm = new Vue({
   }
 });
 
-$('#modal-create-resource', '.modal-update-resource').on('hidden.bs.modal', function (e) {
+$('#modal-create-resource').on('hidden.bs.modal', function (e) {
   vm.$root.closeModal();
 })
+
+// @todo - fixme for edit modal, dynamically added and thus, cannot be bind...

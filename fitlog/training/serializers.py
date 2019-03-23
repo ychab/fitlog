@@ -117,12 +117,13 @@ class TrainingSerializer(serializers.ModelSerializer):
 
 
 class TrainingListSerializer(serializers.ModelSerializer):
-    workout = WorkoutDetailSerializer()
+    training_exercises = TrainingExerciseSerializer(many=True)
 
     class Meta:
         model = Training
         fields = (
-            'id', 'date', 'workout', 'sets', 'reps', 'weights', 'rest_avg',
+            'id', 'date', 'workout', 'training_exercises',
+            'sets_total', 'reps_total', 'weights_total', 'rest_avg',
         )
 
 

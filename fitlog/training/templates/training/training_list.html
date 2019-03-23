@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <table class="table table-bordered" width="100%" cellspacing="0">
+      <table v-if="!loadingTrainings" class="table table-bordered" width="100%" cellspacing="0">
         <thead>
           <tr>
             <th>{% trans 'Date' %}</th>
@@ -40,13 +40,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="resource in resources" v-if="!loadingTrainings">
+          <tr v-for="resource in resources">
             <td>[[ resource.date ]]</td>
-            <td v-if="resource.workout">[[ resource.workout.name ]]</td>
-            <td v-if="!resource.workout"></td>
-            <td>[[ resource.sets ]]</td>
-            <td>[[ resource.reps ]]</td>
-            <td>[[ resource.weights ]]</td>
+            <td v-if="resource.workout">[[ _getWorkoutName(resource.workout) ]]</td>
+            <td v-if="!resource.workout">{% trans 'Freestyle' %}</td>
+            <td>[[ resource.sets_total ]]</td>
+            <td>[[ resource.reps_total ]]</td>
+            <td>[[ resource.weights_total ]]</td>
             <td>[[ resource.rest_avg ]]</td>
             <td>
               <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target="'#modal-detail-' + resource.id"><i class="fas fa-eye"></i></button>
@@ -62,7 +62,7 @@
 
   {% include 'training/training_create_modal.html' %}
 {#  {% include 'training/training_detail_modal.html' %}#}
-{#  {% include 'training/training_update_modal.html' %}#}
+  {% include 'training/training_update_modal.html' %}
   {% include 'training/resource_delete_modal.html' %}
 
 </div>

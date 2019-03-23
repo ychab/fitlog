@@ -12,7 +12,14 @@
       <form v-on:submit.prevent="onSubmit">
         <div class="table-responsive">
 
-          <table class="table table-bordered" width="100%" cellspacing="0">
+          <div v-if="loading" class="p-2">
+            <div class="d-flex align-items-center">
+              <strong>{% trans 'Loading...' %}</strong>
+              <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <table v-if="!loading" class="table table-bordered" width="100%" cellspacing="0">
             <thead>
               <tr>
                 <th>Name</th>
@@ -20,15 +27,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-if="loading">
-                <td colspan="2">
-                  <div class="d-flex align-items-center">
-                    <strong>{% trans 'Loading...' %}</strong>
-                    <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-                  </div>
-                </td>
-              </tr>
-              <tr v-if="!loading">
+              <tr>
                   <td>
                     <input class="form-control" v-bind:class="{ 'is-invalid' : 'name' in formErrors }" type="text" v-model="newResource.name" placeholder="{% trans 'Name' %}"/>
                     <div v-if="'name' in formErrors" class="invalid-feedback">

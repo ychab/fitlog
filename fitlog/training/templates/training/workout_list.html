@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <table class="table table-bordered" width="100%" cellspacing="0">
+      <table v-if="!loadingWorkouts && !loadingRoutines && !loadingExercises" class="table table-bordered" width="100%" cellspacing="0">
         <thead>
           <tr>
             <th>Name</th>
@@ -37,7 +37,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="resource in resources" v-if="!loadingWorkouts && !loadingRoutines && !loadingExercises">
+          <tr v-for="resource in resources">
             <td>[[ resource.name ]]</td>
             <td>[[ resource.routine.name ]]</td>
             <td>

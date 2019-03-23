@@ -63,10 +63,10 @@ class Training(models.Model):
 
     # Yes, we are doing SQL queries for each of this called methods. This is not
     # the end of time because remember, this is a **personal** app ;-)
-    def sets(self):
+    def sets_total(self):
         return TrainingExerciseSet.objects.filter(training_exercise__training=self).count()
 
-    def reps(self):
+    def reps_total(self):
         return round(
             TrainingExerciseSet.objects
                 .filter(training_exercise__training=self)
@@ -75,7 +75,7 @@ class Training(models.Model):
             2
         )
 
-    def weights(self):
+    def weights_total(self):
         return round(
             TrainingExerciseSet.objects
                 .filter(training_exercise__training=self)
