@@ -89,7 +89,7 @@ class TrainingExerciseSetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TrainingExerciseSet
-        fields = ('id', 'set', 'reps', 'weight', 'rest_period', 'tempo')
+        fields = ('id', 'order', 'reps', 'weight', 'rest_period', 'tempo')
 
 
 class TrainingExerciseSerializer(serializers.ModelSerializer):
@@ -131,7 +131,7 @@ class TrainingSaveSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Training
-        fields = ('id', 'date', 'workout', 'training_sets')
+        fields = ('id', 'date', 'workout', 'training_exercises')
 
     def create_training_exercises(self, instance, training_exercises_data):
 
