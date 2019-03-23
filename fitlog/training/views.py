@@ -95,7 +95,7 @@ class TrainingViewSet(ModelViewSet):
                     TrainingExercise.objects
                         .select_related('exercise')
                         .prefetch_related('training_exercise_sets')
-                        .order_by('exercise__name', 'set')
+                        .order_by('exercise__name')
                 )
             ))
         )

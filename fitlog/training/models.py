@@ -64,12 +64,12 @@ class Training(models.Model):
     # Yes, we are doing SQL queries for each of this called methods. This is not
     # the end of time because remember, this is a **personal** app ;-)
     def sets(self):
-        return self.training_exercises.training_exercise_sets.count()
+        return TrainingExerciseSet.objects.filter(training_exercise__training=self).count()
 
     def reps(self):
         return round(
-            self.training_exercises
-                .training_exercise_sets
+            TrainingExerciseSet.objects
+                .filter(training_exercise__training=self)
                 .aggregate(Sum('reps'))
                 .get('reps__sum', None),
             2
@@ -77,8 +77,8 @@ class Training(models.Model):
 
     def weights(self):
         return round(
-            self.training_exercises
-                .training_exercise_sets
+            TrainingExerciseSet.objects
+                .filter(training_exercise__training=self)
                 .aggregate(Sum('weight'))
                 .get('weight__sum', None),
             2
@@ -86,8 +86,8 @@ class Training(models.Model):
 
     def rest_avg(self):
         return round(
-            self.training_exercises
-                .training_exercise_sets
+            TrainingExerciseSet.objects
+                .filter(training_exercise__training=self)
                 .aggregate(Avg('rest_period'))
                 .get('rest_period__avg', None),
             2
