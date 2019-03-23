@@ -1,8 +1,11 @@
+from datetime import date
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Prefetch
 from django.views import generic
 
 from django_filters.rest_framework import DjangoFilterBackend
+
 from rest_framework.filters import OrderingFilter
 from rest_framework.viewsets import ModelViewSet
 
@@ -30,6 +33,11 @@ class WorkoutListView(LoginRequiredMixin, generic.TemplateView):
 
 class TrainingListView(LoginRequiredMixin, generic.TemplateView):
     template_name = 'training/training_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['date_today'] = date.today()
+        return context
 
 
 class RoutineViewSet(ModelViewSet):

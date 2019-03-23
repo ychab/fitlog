@@ -87,25 +87,6 @@ const vm = new Vue({
   methods: {
     ... baseResourceApp.methods,
 
-    // _getFormErrors(error) {
-    //   let errors = []
-    //   let messages = []
-    //
-    //   if (error.response.status == 400) {
-    //     for (const field in error.response.data) {
-    //       if (field !== 'non_field_errors') {
-    //         if (field === 'training_sets') {
-    //           messages.push({type: 'danger', text: field + ' : ' + msg})
-    //         } else {
-    //           errors[field] = error.response.data[field]
-    //         }
-    //       }
-    //     }
-    //   }
-    //
-    //   return errors
-    // },
-
     _getExerciceName(exerciseId) {
       let exerciseName = null
       for (let exercise of this.exercises) {
@@ -242,6 +223,7 @@ const vm = new Vue({
         let field = this.resourceFields[fieldName]
         newResource[fieldName] = field.default
       }
+      newResource.date = dateToday
       newResource.training_exercises = []
 
       this.newResource = newResource
@@ -251,29 +233,6 @@ const vm = new Vue({
       this._resetResource()
       this.newExerciseSelector = null
     },
-
-    // _collectFieldValues(resource) {
-    //   let postData = {}
-    //   for (const fieldName in this.resourceFields) {
-    //     let value = resource[fieldName]
-    //     postData[fieldName] = value
-    //   }
-    //
-    //   // postData['training_sets'] = []
-    //   // for (let key in this.newExerciseSets) {
-    //   //   for (let set of this.newExerciseSets[key].sets) {
-    //   //     postData['training_sets'].push({
-    //   //       exercise: set.exercise,
-    //   //       set: set.set,
-    //   //       reps: set.reps,
-    //   //       weight: set.weight,
-    //   //       rest_period: set.rest_period
-    //   //     })
-    //   //   }
-    //   // }
-    //
-    //   return postData
-    // },
 
     createResource(resource) {
       this.creating = true

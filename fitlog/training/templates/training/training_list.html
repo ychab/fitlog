@@ -69,6 +69,10 @@
 {% endblock %}
 
 {% block extrabody %}
+<script type="text/javascript">
+  // Haha, native Javascript really sucks!! So complicated to just format a date...
+  var dateToday = "{{ date_today|date:"Y-m-d" }}";
+</script>
 <script src="{% static 'training/js/resource.js' %}"></script>
 <script src="{% static 'training/js/trainings.js' %}"></script>
 {% endblock %}
