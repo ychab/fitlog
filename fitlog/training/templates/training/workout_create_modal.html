@@ -87,12 +87,12 @@
                 </div>
 
                 <div class="form-group col-2">
-                  <button class="btn btn-link" type="button" v-on:click="removeWorkoutExercise(newResource, index)"><i class="fas fa-minus"></i> {% trans 'Delete' %}</button>
+                  <button class="btn btn-link" type="button" v-on:click="removeWorkoutExercise(index)"><i class="fas fa-minus"></i> {% trans 'Delete' %}</button>
                 </div>
               </div>
 
               <div>
-                <button class="btn btn-link" type="button" v-on:click="addWorkoutExercise(newResource)">
+                <button class="btn btn-link" type="button" v-on:click="addWorkoutExercise()">
                   <i class="fas fa-plus"></i> {% trans 'Add' %}
                 </button>
               </div>

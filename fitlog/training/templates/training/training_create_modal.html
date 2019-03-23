@@ -53,13 +53,13 @@
               <div class="accordion" id="accordionTrainingExercices">
                 <div v-for="trainingExercice, trainingExerciceIndex) in newResource.training_exercises" class="card">
 
-                  <div class="card-header" v-bind:id="'heading-set-' + trainingExercice.exercise.id">
+                  <div class="card-header" v-bind:id="'heading-set-' + trainingExercice.exercise">
                     <h2 class="mb-0">
                       <button class="btn btn-link" type="button"
                               data-toggle="collapse"
-                              v-bind:data-target="'#collapse-set-' + trainingExercice.exercise.id"
-                              aria-expanded="true" v-bind:aria-controls="'collapse-set-' + trainingExercice.exercise.id">
-                        [[ trainingExercice.exercise.name ]]
+                              v-bind:data-target="'#collapse-set-' + trainingExercice.exercise"
+                              aria-expanded="true" v-bind:aria-controls="'collapse-set-' + trainingExercice.exercise">
+                        [[ _getExerciceName(trainingExercice.exercise) ]]
                       </button>
                       <button class="btn btn-link float-right" type="button" v-on:click="removeTrainingExercise(trainingExerciceIndex)">
                         <i class="fas fa-minus"></i> {% trans 'Remove' %}
@@ -68,8 +68,8 @@
                   </div>
 
                   <div class="collapse show"
-                       v-bind:id="'collapse-set-' + trainingExercice.exercise.id"
-                       aria-labelledby="'heading-set-' + trainingExercice.exercise.id"
+                       v-bind:id="'collapse-set-' + trainingExercice.exercise"
+                       aria-labelledby="'heading-set-' + trainingExercice.exercise"
                        data-parent="#accordionTrainingExercices">
                     <div class="card-body">
                       <table class="table table-bordered" width="100%" cellspacing="0">
@@ -85,24 +85,24 @@
                           <tr v-for="(set, setIndex) in trainingExercice.training_exercise_sets">
                             <td>
                               <input class="form-control" type="number"
-                                     v-bind:id="'exercise-' + trainingExercice.exercise.id + '-reps-' + setIndex"
+                                     v-bind:id="'exercise-' + trainingExercice.exercise + '-reps-' + setIndex"
                                      v-model.number="set.reps"
                                      min="1">
                             </td>
                             <td>
                               <input class="form-control" type="number"
-                                     v-bind:id="'exercise-' + trainingExercice.exercise.id + '-weight-' + setIndex"
+                                     v-bind:id="'exercise-' + trainingExercice.exercise + '-weight-' + setIndex"
                                      v-model.number="set.weight"
                                      min="1">
                             </td>
                             <td>
                               <input class="form-control" type="number"
-                                     v-bind:id="'exercise-' + trainingExercice.exercise.id + '-rest-' + setIndex"
+                                     v-bind:id="'exercise-' + trainingExercice.exercise + '-rest-' + setIndex"
                                      v-model.number="set.rest_period"
                                      min="1">
                             </td>
                             <td>
-                              <button class="btn btn-link" type="button" v-on:click="removeTrainingExerciseSet(trainingExercice.exercise.id, setIndex)">
+                              <button class="btn btn-link" type="button" v-on:click="removeTrainingExerciseSet(trainingExercice.exercise, setIndex)">
                                 <i class="fas fa-minus"></i> {% trans 'Remove' %}
                               </button>
                             </td>
@@ -110,7 +110,7 @@
                         </tbody>
                       </table>
 
-                      <button class="btn btn-link" type="button" v-on:click="addTrainingExerciseSet(exerciseSet.exercise.id)">
+                      <button class="btn btn-link" type="button" v-on:click="addTrainingExerciseSet(trainingExercice.exercise)">
                         <i class="fas fa-plus"></i> {% trans 'Add set' %}
                       </button>
 

@@ -156,7 +156,7 @@ SWAGGER_SETTINGS = {
     'SHOW_REQUEST_HEADERS': True,
 }
 
-LOGIN_REDIRECT_URL = 'trainings:workout_list'
+LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 
 FITLOG = {}

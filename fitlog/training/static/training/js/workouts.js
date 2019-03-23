@@ -78,13 +78,8 @@ const vm = new Vue({
       .finally(() => this.loadingExercises = false)
   },
   methods: {
-    _getMessageErrors: baseResourceApp.methods._getMessageErrors,
-    _getFormErrors: baseResourceApp.methods._getFormErrors,
-    hasFormFieldErrors: baseResourceApp.methods.hasFormFieldErrors,
+    ... baseResourceApp.methods,
 
-    refresh: baseResourceApp.methods.refresh,
-
-    _collectFieldValues: baseResourceApp.methods._collectFieldValues,
     _collectUpdateFieldValues(resource) {
       // @FIXME for relation, didn't find a better way to remove extra data...
       let postData = {}
@@ -132,11 +127,13 @@ const vm = new Vue({
 
       this.newResource = newResource
     },
-    addWorkoutExercise(resource) {
-      resource.workout_exercises.push(this._prepareNewWorkoutExercise())
+    addWorkoutExercise() {
+      let workoutExercise = this._prepareNewWorkoutExercise()
+      workoutExercise.order = this.newResource.workout_exercises.length
+      this.newResource.workout_exercises.push(workoutExercise)
     },
-    removeWorkoutExercise(resource, index) {
-      resource.workout_exercises.splice(index, 1)
+    removeWorkoutExercise(index) {
+      this.newResource.workout_exercises.splice(index, 1)
     },
     createResource(resource) {
       this.creating = true
