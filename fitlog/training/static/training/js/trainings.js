@@ -87,7 +87,7 @@ const vm = new Vue({
   methods: {
     ... baseResourceApp.methods,
 
-    _getExerciceName(exerciseId) {
+    getExerciseName(exerciseId) {
       let exerciseName = null
       for (let exercise of this.exercises) {
         if (exercise.id == exerciseId) {
@@ -97,7 +97,7 @@ const vm = new Vue({
       }
       return exerciseName
     },
-    _getWorkoutName(workoutId) {
+    getWorkoutName(workoutId) {
       let workoutName = null
       for (let workout of this.workouts) {
         if (workout.id == workoutId) {
@@ -121,7 +121,7 @@ const vm = new Vue({
       return newExercise
     },
     addTrainingExercise(resource, exerciseId) {
-      let exerciseName = this._getExerciceName(exerciseId)
+      let exerciseName = this.getExerciseName(exerciseId)
 
       if (!exerciseId || !exerciseName) {
         this.formErrors = {
@@ -140,7 +140,7 @@ const vm = new Vue({
     },
     removeTrainingExercise(resource, key) {
       let exerciseId = resource.training_exercises[key].exercise
-      vm.$set(this.exerciseChoices, exerciseId, this._getExerciceName(exerciseId))
+      vm.$set(this.exerciseChoices, exerciseId, this.getExerciseName(exerciseId))
       vm.$delete(resource.training_exercises, key)
       this.formErrors = {}
     },

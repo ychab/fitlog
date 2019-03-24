@@ -42,7 +42,7 @@
         <tbody>
           <tr v-for="resource in resources">
             <td>[[ resource.date ]]</td>
-            <td v-if="resource.workout">[[ _getWorkoutName(resource.workout) ]]</td>
+            <td v-if="resource.workout">[[ getWorkoutName(resource.workout) ]]</td>
             <td v-if="!resource.workout">{% trans 'Freestyle' %}</td>
             <td>[[ resource.sets_total ]]</td>
             <td>[[ resource.reps_total ]]</td>
@@ -61,7 +61,7 @@
   </div>
 
   {% include 'training/training_create_modal.html' %}
-{#  {% include 'training/training_detail_modal.html' %}#}
+  {% include 'training/training_detail_modal.html' %}
   {% include 'training/training_update_modal.html' %}
   {% include 'training/resource_delete_modal.html' %}
 

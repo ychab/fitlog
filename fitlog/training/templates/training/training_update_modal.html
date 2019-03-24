@@ -9,7 +9,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div v-if="!loadingWorkouts" class="modal-body">
+      <div v-if="!loadingTrainings && !loadingWorkouts && !loadingExercises" class="modal-body">
 
         <div v-for="message in modalMessages" v-bind:class="'alert alert-' + message.type + ' alert-dismissible fade show'" role="alert">
           [[ message.text ]]
@@ -50,28 +50,28 @@
             <div class="card-header">{% trans 'Exercises sets' %}</div>
             <div class="card-body">
 
-              <div class="accordion" id="accordionTrainingExercices">
-                <div v-for="trainingExercice, trainingExerciceIndex) in resource.training_exercises" class="card">
+              <div class="accordion" id="accordionTrainingExercises">
+                <div v-for="(trainingExercise, trainingExerciseIndex) in resource.training_exercises" class="card">
 
-                  <div class="card-header" v-bind:id="'heading-set-' + trainingExercice.exercise">
+                  <div class="card-header" v-bind:id="'heading-set-' + trainingExercise.exercise">
                     <h2 class="mb-0">
                       <button class="btn btn-link" type="button"
                               data-toggle="collapse"
                               aria-expanded="true"
-                              v-bind:data-target="'#collapse-set-' + trainingExercice.exercise"
-                              v-bind:aria-controls="'collapse-set-' + trainingExercice.exercise">
-                        [[ _getExerciceName(trainingExercice.exercise) ]]
+                              v-bind:data-target="'#collapse-set-' + trainingExercise.exercise"
+                              v-bind:aria-controls="'collapse-set-' + trainingExercise.exercise">
+                        [[ getExerciseName(trainingExercise.exercise) ]]
                       </button>
-                      <button class="btn btn-link float-right" type="button" v-on:click="removeTrainingExercise(resource, trainingExerciceIndex)">
+                      <button class="btn btn-link float-right" type="button" v-on:click="removeTrainingExercise(resource, trainingExerciseIndex)">
                         <i class="fas fa-minus"></i> {% trans 'Remove' %}
                       </button>
                     </h2>
                   </div>
 
                   <div class="collapse show"
-                       v-bind:id="'collapse-set-' + trainingExercice.exercise"
-                       aria-labelledby="'heading-set-' + trainingExercice.exercise"
-                       data-parent="#accordionTrainingExercices">
+                       v-bind:id="'collapse-set-' + trainingExercise.exercise"
+                       aria-labelledby="'heading-set-' + trainingExercise.exercise"
+                       data-parent="#accordionTrainingExercises">
                     <div class="card-body">
                       <table class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
@@ -83,39 +83,39 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="(set, setIndex) in trainingExercice.training_exercise_sets">
+                          <tr v-for="(set, setIndex) in trainingExercise.training_exercise_sets">
                             <td>
                               <input class="form-control" type="number"
-                                     v-bind:id="'exercise-' + trainingExercice.exercise + '-reps-' + setIndex"
-                                     v-bind:class="{ 'is-invalid' : hasFormFieldErrors('training_exercises.' + trainingExerciceIndex + '.training_exercise_sets.' + setIndex + '.reps') }"
+                                     v-bind:id="'exercise-' + trainingExercise.exercise + '-reps-' + setIndex"
+                                     v-bind:class="{ 'is-invalid' : hasFormFieldErrors('training_exercises.' + trainingExerciseIndex + '.training_exercise_sets.' + setIndex + '.reps') }"
                                      v-model.number="set.reps"
                                      min="1">
-                              <div class="invalid-feedback" v-if="hasFormFieldErrors('training_exercises.' + trainingExerciceIndex + '.training_exercise_sets.' + setIndex + '.reps')">
-                                <span v-for="msg in formErrors.training_exercises[trainingExerciceIndex].training_exercise_sets[setIndex].reps">[[ msg ]]</span>
+                              <div class="invalid-feedback" v-if="hasFormFieldErrors('training_exercises.' + trainingExerciseIndex + '.training_exercise_sets.' + setIndex + '.reps')">
+                                <span v-for="msg in formErrors.training_exercises[trainingExerciseIndex].training_exercise_sets[setIndex].reps">[[ msg ]]</span>
                               </div>
                             </td>
                             <td>
                               <input class="form-control" type="number"
-                                     v-bind:id="'exercise-' + trainingExercice.exercise + '-weight-' + setIndex"
-                                     v-bind:class="{ 'is-invalid' : hasFormFieldErrors('training_exercises.' + trainingExerciceIndex + '.training_exercise_sets.' + setIndex + '.weight') }"
+                                     v-bind:id="'exercise-' + trainingExercise.exercise + '-weight-' + setIndex"
+                                     v-bind:class="{ 'is-invalid' : hasFormFieldErrors('training_exercises.' + trainingExerciseIndex + '.training_exercise_sets.' + setIndex + '.weight') }"
                                      v-model.number="set.weight"
                                      min="1">
-                              <div class="invalid-feedback" v-if="hasFormFieldErrors('training_exercises.' + trainingExerciceIndex + '.training_exercise_sets.' + setIndex + '.weight')">
-                                <span v-for="msg in formErrors.training_exercises[trainingExerciceIndex].training_exercise_sets[setIndex].weight">[[ msg ]]</span>
+                              <div class="invalid-feedback" v-if="hasFormFieldErrors('training_exercises.' + trainingExerciseIndex + '.training_exercise_sets.' + setIndex + '.weight')">
+                                <span v-for="msg in formErrors.training_exercises[trainingExerciseIndex].training_exercise_sets[setIndex].weight">[[ msg ]]</span>
                               </div>
                             </td>
                             <td>
                               <input class="form-control" type="number"
-                                     v-bind:id="'exercise-' + trainingExercice.exercise + '-rest-' + setIndex"
-                                     v-bind:class="{ 'is-invalid' : hasFormFieldErrors('training_exercises.' + trainingExerciceIndex + '.training_exercise_sets.' + setIndex + '.rest_period') }"
+                                     v-bind:id="'exercise-' + trainingExercise.exercise + '-rest-' + setIndex"
+                                     v-bind:class="{ 'is-invalid' : hasFormFieldErrors('training_exercises.' + trainingExerciseIndex + '.training_exercise_sets.' + setIndex + '.rest_period') }"
                                      v-model.number="set.rest_period"
                                      min="1">
-                              <div class="invalid-feedback" v-if="hasFormFieldErrors('training_exercises.' + trainingExerciceIndex + '.training_exercise_sets.' + setIndex + '.rest_period')">
-                                <span v-for="msg in formErrors.training_exercises[trainingExerciceIndex].training_exercise_sets[setIndex].rest_period">[[ msg ]]</span>
+                              <div class="invalid-feedback" v-if="hasFormFieldErrors('training_exercises.' + trainingExerciseIndex + '.training_exercise_sets.' + setIndex + '.rest_period')">
+                                <span v-for="msg in formErrors.training_exercises[trainingExerciseIndex].training_exercise_sets[setIndex].rest_period">[[ msg ]]</span>
                               </div>
                             </td>
                             <td>
-                              <button class="btn btn-link" type="button" v-on:click="removeTrainingExerciseSet(resource, trainingExercice.exercise, setIndex)">
+                              <button class="btn btn-link" type="button" v-on:click="removeTrainingExerciseSet(resource, trainingExercise.exercise, setIndex)">
                                 <i class="fas fa-minus"></i> {% trans 'Remove' %}
                               </button>
                             </td>
@@ -123,7 +123,7 @@
                         </tbody>
                       </table>
 
-                      <button class="btn btn-link" type="button" v-on:click="addTrainingExerciseSet(resource, trainingExercice.exercise)">
+                      <button class="btn btn-link" type="button" v-on:click="addTrainingExerciseSet(resource, trainingExercise.exercise)">
                         <i class="fas fa-plus"></i> {% trans 'Add set' %}
                       </button>
 

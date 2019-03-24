@@ -1,0 +1,60 @@
+{% load i18n %}
+
+<div v-for="resource in resources" class="modal fade modal-detail-resource" tabindex="-1" role="dialog" v-bind:id="'modal-detail-' + resource.id">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">{% trans 'Training detail' %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div v-if="!loadingTrainings && !loadingWorkouts && !loadingExercises" class="modal-body">
+
+        <div class="row">
+          <div class="col-md-2">{% trans 'Date' %}</div>
+          <div class="col-md-2">[[ resource.date ]]</div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-2">{% trans 'Workout' %}</div>
+          <div class="col-md-2">[[ getWorkoutName(resource.workout) ]]</div>
+        </div>
+
+        <div class="card" v-for="(trainingExercise, trainingExerciseIndex) in resource.training_exercises">
+
+          <div class="card-header">
+            [[ getExerciseName(trainingExercise.exercise) ]]
+          </div>
+
+          <div class="card-body">
+            <table class="table table-bordered" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>{% trans 'Order' %}</th>
+                  <th>{% trans 'Reps' %}</th>
+                  <th>{% trans 'Weight' %}</th>
+                  <th>{% trans 'Rest period' %}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(set, setIndex) in trainingExercise.training_exercise_sets">
+                  <td>[[ set.order ]]</td>
+                  <td>[[ set.reps ]]</td>
+                  <td>[[ set.weight ]]</td>
+                  <td>[[ set.rest_period ]]</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans 'Close' %}</button>
+      </div>
+    </div>
+  </div>
+</div>
