@@ -3,6 +3,84 @@
 
 {% block title %}{% trans 'Trainings' %}{% endblock %}
 {% block content %}
+{#<div class="card mb-3">#}
+{#  <div class="card-header">#}
+{#    <i class="fas fa-filter"></i>#}
+{#    {% trans 'Filters' %}#}
+{#  </div>#}
+{#  <div class="card-body">#}
+{#    <form v-on:submit.prevent="onSubmit">#}
+{#      <div class="form-row align-items-center">#}
+{##}
+{#        <div class="col-auto">#}
+{#          <label for="filter-date-from">{% trans 'From' %}</label>#}
+{#          <input type="date" v-model="filter.dateFrom" class="form-control" id="filter-date-from">#}
+{#        </div>#}
+{##}
+{#        <div class="col-auto">#}
+{#          <label for="filter-date-to">{% trans 'To' %}</label>#}
+{#          <input type="date" v-model="filter.dateTo" class="form-control" id="filter-date-to">#}
+{#        </div>#}
+{##}
+{#        <div class="col-auto">#}
+{#          <label for="filter-workout">{% trans 'Workout' %}</label>#}
+{#          <select class="form-control" v-model="filter.workout" id="filter-workout">#}
+{#            <option value="">--- {% trans 'Select a workout' %} ---</option>#}
+{#            <option v-for="workout in workouts" v-bind:value="workout.id">[[ workout.name ]]</option>#}
+{#          </select>#}
+{#        </div>#}
+{##}
+{#        <div class="col-auto">#}
+{#          <label for="filter-exercise">{% trans 'Exercises' %}</label>#}
+{#          <select class="form-control" v-model="filter.workout" id="exercise">#}
+{#            <option value="">--- {% trans 'Select an exercise' %} ---</option>#}
+{#            <option v-for="exercise in exercises" v-bind:value="exercise.id">[[ exercise.name ]]</option>#}
+{#          </select>#}
+{#        </div>#}
+{##}
+{#        <div class="col-auto">#}
+{#          <button type="button" class="btn btn-primary" v-on:click="filter()" v-bind:disabled="filtering">#}
+{#            <span v-if="!filtering" >{% trans 'Filter' %}</span>#}
+{#            <span v-if="filtering">#}
+{#              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>#}
+{#              {% trans 'Wait...' %}#}
+{#            </span>#}
+{#          </button>#}
+{#        </div>#}
+{#      </div>#}
+{#    </form>#}
+{#  </div>#}
+{#</div>#}
+{##}
+{#<div class="card mb-3">#}
+{#  <div class="card-header">#}
+{#    <i class="fas fa-calculator"></i>#}
+{#    {% trans 'Totals' %}#}
+{#  </div>#}
+{#  <div class="card-body">#}
+{#    <table v-if="!loadingTrainings" class="table table-bordered" width="100%" cellspacing="0">#}
+{#      <thead>#}
+{#        <tr>#}
+{#          <th>{% trans 'Total training' %}</th>#}
+{#          <th>{% trans 'Total sets' %}</th>#}
+{#          <th>{% trans 'Total reps' %}</th>#}
+{#          <th>{% trans 'Total weights' %}</th>#}
+{#          <th>{% trans 'Avg rest' %}</th>#}
+{#        </tr>#}
+{#      </thead>#}
+{#      <tbody>#}
+{#        <tr>#}
+{#          <td>[[ totals.count ]]</td>#}
+{#          <td>[[ totals.sets ]]</td>#}
+{#          <td>[[ totals.reps ]]</td>#}
+{#          <td>[[ totals.weights ]]</td>#}
+{#          <td>[[ totals.avg_rest ]]</td>#}
+{#        </tr>#}
+{#      </tbody>#}
+{#    </table>#}
+{#  </div>#}
+{#</div>#}
+
 <div class="card mb-3">
 
   <div class="card-header">
@@ -18,16 +96,16 @@
   </div>
 
   <div class="card-body">
-    <div class="table-responsive">
 
-      <div v-if="loadingTrainings" class="p-2">
-        <div class="d-flex align-items-center">
-          <strong>{% trans 'Loading...' %}</strong>
-          <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-        </div>
+    <div v-if="loadingTrainings" class="p-2">
+      <div class="d-flex align-items-center">
+        <strong>{% trans 'Loading...' %}</strong>
+        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
       </div>
+    </div>
 
-      <table v-if="!loadingTrainings" class="table table-bordered" width="100%" cellspacing="0">
+    <div v-if="!loadingTrainings" class="table-responsive">
+      <table class="table table-bordered" width="100%" cellspacing="0">
         <thead>
           <tr>
             <th>{% trans 'Date' %}</th>
@@ -54,9 +132,41 @@
               <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target="'#modal-delete-' + resource.id"><i class="fas fa-trash"></i></button>
             </td>
           </tr>
-
         </tbody>
       </table>
+
+      <div class="col-1 float-left">
+        <select class="form-control" v-model="pager.size" id="page-size">
+          <option value="20">20</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="200">200</option>
+        </select>
+      </div>
+
+      <nav>
+        <ul class="pagination justify-content-center">
+
+          <li class="page-item" v-bind:class="{ 'disabled' : !pager.previous }">
+            <a v-on:click="changePage(pager.previous)" class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">{% trans 'Previous' %}</span>
+            </a>
+          </li>
+
+          <li v-for="page in pager.pages" class="page-item" v-bind:class="{ 'active' : page == pager.current }">
+            <a class="page-link" href="#" v-on:click="changePage(page)">[[ page ]]</a>
+          </li>
+
+          <li class="page-item" v-bind:class="{ 'disabled' : !pager.next }">
+            <a v-on:click="changePage(pager.next)" class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">{% trans 'Next' %}</span>
+            </a>
+          </li>
+        </ul>
+    </nav>
+
     </div>
   </div>
 

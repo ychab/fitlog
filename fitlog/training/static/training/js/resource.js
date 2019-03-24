@@ -8,9 +8,21 @@ const baseResourceApp = {
       modalMessages: {},
 
       loading: true,
+      // filtering: false,
+      paging: false,
       creating: false,
       updating: false,
       deleting: false,
+
+      pager: {
+        count: null,
+        current: null,
+        size: null,
+        max: 10,
+        previous: null,
+        next: null,
+        pages: null,
+      },
 
       resources: [],
       newResource: null,
