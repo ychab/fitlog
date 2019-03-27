@@ -2,39 +2,43 @@ from datetime import date
 
 from django.db import models
 from django.db.models import Avg, Sum
+from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 
 
-class Routine(models.Model):
+class SlugModel(models.Model):
     name = models.CharField(max_length=255, verbose_name=_('Name'))
+    slug = models.SlugField(unique=True, editable=False)
+
+    class Meta:
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
+class Routine(SlugModel):
 
     class Meta:
         db_table = 'routines'
 
-    def __str__(self):
-        return self.name
 
-
-class Exercise(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_('Name'))
+class Exercise(SlugModel):
 
     class Meta:
         db_table = 'exercises'
 
-    def __str__(self):
-        return self.name
 
-
-class Workout(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_('Name'))
+class Workout(SlugModel):
     routine = models.ForeignKey(Routine, related_name='workouts', on_delete=models.CASCADE)
     exercises = models.ManyToManyField(Exercise, related_name='workouts', through='WorkoutExercise')
 
     class Meta:
         db_table = 'workouts'
-
-    def __str__(self):
-        return self.name
 
 
 class WorkoutExercise(models.Model):
