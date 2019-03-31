@@ -46,7 +46,8 @@ class TrainingListView(LoginRequiredMixin, generic.TemplateView):
 class RoutineViewSet(ModelViewSet):
     queryset = Routine.objects.all()
     serializer_class = RoutineSerializer
-    filter_backends = (OrderingFilter,)
+    filter_backends = (SearchFilter, OrderingFilter)
+    search_fields = ['name']
     ordering_fields = ('name',)
     ordering = ('name',)
 

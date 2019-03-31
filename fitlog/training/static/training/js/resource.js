@@ -162,7 +162,7 @@ const baseResourceApp = {
 
     _updatePager(count) {
       this.pager.count = count
-      let last = Math.round(this.pager.count / this.pager.size)
+      let last = this.pager.count > this.pager.size ? Math.round(this.pager.count / this.pager.size) : 1
 
       this.pager.previous = this.pager.current > 1 ? this.pager.current - 1 : false
       this.pager.next = (this.pager.current + 1) <= last ? this.pager.current + 1 : false

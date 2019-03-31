@@ -4,61 +4,68 @@
 {% block title %}{% trans 'Resources' %}{% endblock %}
 {% block content %}
   <div class="card mb-3">
+
     <div class="card-header">
       <i class="fas fa-table"></i>
       {% block table_title %}{% endblock %}
+      <span v-if="!loading">
+        {% include 'training/search.html' %}
+      </span>
     </div>
+
     <div class="card-body">
-      <form v-on:submit.prevent="onSubmit">
-        <div class="table-responsive">
 
-          <div v-if="loading" class="p-2">
-            <div class="d-flex align-items-center">
-              <strong>{% trans 'Loading...' %}</strong>
-              <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-            </div>
-          </div>
-
-          <table v-if="!loading" class="table table-bordered" width="100%" cellspacing="0">
-            <thead>
-              <tr>
-                <th>{% trans 'Name' %}</th>
-                <th>{% trans 'Action' %}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                  <td>
-                    <input class="form-control" v-bind:class="{ 'is-invalid' : 'name' in formErrors }" type="text" v-model="newResource.name" placeholder="{% trans 'Name' %}"/>
-                    <div v-if="'name' in formErrors" class="invalid-feedback">
-                      <span v-for="msg in formErrors.name">[[ msg ]]</span>
-                    </div>
-                  </td>
-                  <td>
-                    <button class="btn btn-link" v-on:click="createResource(newResource)" type="submit"><i class="fas fa-plus"></i></button>
-                    <div v-if="creating" class="spinner-border" role="status">
-                      <span class="sr-only">{% trans 'Loading...' %}</span>
-                    </div>
-                  </td>
-              </tr>
-              <tr v-if="!loading" v-for="resource in resources">
-                  <td>
-                    <input class="form-control" type="text" v-model="resource.name"/>
-                  </td>
-                  <td>
-                    <button type="submit" class="btn btn-link" v-on:click="updateResource(resource)"><i class="fas fa-save"></i></button>
-                    <div v-if="updating == resource.id" class="spinner-border" role="status"></div>
-
-                    <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target="'#modal-delete-' + resource.id">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-              </tr>
-            </tbody>
-          </table>
-          {% include 'training/pager.html' %}
+      <div v-if="loading" class="p-2">
+        <div class="d-flex align-items-center">
+          <strong>{% trans 'Loading...' %}</strong>
+          <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
         </div>
-      </form>
+      </div>
+
+      <div v-if="!loading">
+        <form v-on:submit.prevent="onSubmit">
+          <div class="table-responsive">
+            <table v-if="!loading" class="table table-bordered" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>{% trans 'Name' %}</th>
+                  <th>{% trans 'Action' %}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                    <td>
+                      <input class="form-control" v-bind:class="{ 'is-invalid' : 'name' in formErrors }" type="text" v-model="newResource.name" placeholder="{% trans 'Name' %}"/>
+                      <div v-if="'name' in formErrors" class="invalid-feedback">
+                        <span v-for="msg in formErrors.name">[[ msg ]]</span>
+                      </div>
+                    </td>
+                    <td>
+                      <button class="btn btn-link" v-on:click="createResource(newResource)" type="submit"><i class="fas fa-plus"></i></button>
+                      <div v-if="creating" class="spinner-border" role="status">
+                        <span class="sr-only">{% trans 'Loading...' %}</span>
+                      </div>
+                    </td>
+                </tr>
+                <tr v-if="!loading" v-for="resource in resources">
+                    <td>
+                      <input class="form-control" type="text" v-model="resource.name"/>
+                    </td>
+                    <td>
+                      <button type="submit" class="btn btn-link" v-on:click="updateResource(resource)"><i class="fas fa-save"></i></button>
+                      <div v-if="updating == resource.id" class="spinner-border" role="status"></div>
+
+                      <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target="'#modal-delete-' + resource.id">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+            {% include 'training/pager.html' %}
+          </div>
+        </form>
+      </div>
     </div>
 
     {% include 'training/resource_delete_modal.html' %}
