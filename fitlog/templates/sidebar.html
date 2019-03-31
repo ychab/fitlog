@@ -16,7 +16,7 @@
       <div class="dropdown-divider"></div>
       <h6 class="dropdown-header">{% trans 'Add for' %}</h6>
       {% for workout in workouts %}
-      <a class="dropdown-item" href="{% url 'trainings:training_list' %}?workoutId={{ workout.pk }}">{{ workout.name }}</a>
+      <a class="dropdown-item" href="{% url 'trainings:training_list' %}?workoutId={{ workout.pk }}">{{ workout.name|truncatechars:20 }}</a>
       {% endfor %}
     </div>
   </li>
