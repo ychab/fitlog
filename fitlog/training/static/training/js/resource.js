@@ -8,11 +8,13 @@ const baseResourceApp = {
       modalMessages: {},
 
       loading: true,
-      // filtering: false,
+      searching: false,
       paging: false,
       creating: false,
       updating: false,
       deleting: false,
+
+      querySearch: '',
 
       pager: {
         count: null,
@@ -210,6 +212,25 @@ const baseResourceApp = {
           this._updatePager(response.data.count)
         })
         .finally(() => this.paging = false)
+    },
+
+    search() {
+      this.searching = true
+
+      axios
+        .get('/api/' + this.resourcePath + '/', {
+          params: {
+            page: 1,
+            page_size: this.pager.size,
+            search: this.querySearch
+          }
+        })
+        .then(response => {
+          this.resources = response.data.results
+          this.pager.current = 1
+          this._updatePager(response.data.count)
+        })
+        .finally(() => this.searching = false)
     }
   }
 }

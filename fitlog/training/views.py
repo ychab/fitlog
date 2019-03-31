@@ -5,11 +5,10 @@ from django.db.models import Prefetch
 from django.views import generic
 
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.decorators import action
 
-from rest_framework.filters import OrderingFilter
+from rest_framework.decorators import action
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from .models import (
@@ -54,7 +53,8 @@ class RoutineViewSet(ModelViewSet):
 class ExerciseViewSet(ModelViewSet):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
-    filter_backends = (OrderingFilter,)
+    filter_backends = (SearchFilter, OrderingFilter)
+    search_fields = ['name', 'muscle']
     ordering_fields = ('muscle', 'name',)
     ordering = ('muscle', 'name',)
 
