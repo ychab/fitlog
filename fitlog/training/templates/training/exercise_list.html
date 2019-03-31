@@ -45,7 +45,7 @@
                     <td>
                       <select class="form-control"
                               v-bind:class="{ 'is-invalid' : 'muscle' in formErrors }"
-                              v-model="newResource.muscle" required>
+                              v-model="newResource.muscle">
                         <option v-for="(label, slug) in muscles" v-bind:value="slug">[[ label ]]</option>
                       </select>
                       <div v-if="'muscle' in formErrors" class="invalid-feedback">

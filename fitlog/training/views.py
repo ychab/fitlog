@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from datetime import date
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -60,7 +61,7 @@ class ExerciseViewSet(ModelViewSet):
 
     @action(methods=['get'], detail=False)
     def muscles(self, request, *args, **kwargs):
-        return Response(data=dict(Exercise.MUSCLES))
+        return Response(data=OrderedDict(Exercise.MUSCLES))
 
 
 class WorkoutViewSet(ModelViewSet):

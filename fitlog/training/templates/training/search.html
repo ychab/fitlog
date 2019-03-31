@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <div class="float-right">
-  <form v-on:submit="search" class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+  <form v-on:submit.prevent="search" class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
     <div class="input-group">
       <input type="text" class="form-control" v-model="querySearch" placeholder="{% trans 'Search for...' %}" aria-label="Search" aria-describedby="basic-addon2">
       <div class="input-group-append">
