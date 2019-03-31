@@ -14,7 +14,8 @@ class SlugModel(models.Model):
         abstract = True
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        if not self.pk and not self.slug:
+            self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -28,6 +29,31 @@ class Routine(SlugModel):
 
 
 class Exercise(SlugModel):
+
+    MUSCLE_CHEST = 'chest'
+    MUSCLE_BACK = 'back'
+    MUSCLE_SHOULDERS = 'shoulders'
+    MUSCLE_BICEPS = 'biceps'
+    MUSCLE_TRICEPS = 'triceps'
+    MUSCLE_LOWER_BACK = 'lower_back'
+    MUSCLE_GLUTES = 'glutes'
+    MUSCLE_LEGS = 'legs'
+    MUSCLE_CALF = 'calf'
+    MUSCLE_ABS = 'abs'
+    MUSCLES = (
+        (MUSCLE_CHEST, _('Chest')),
+        (MUSCLE_BACK, _('Back')),
+        (MUSCLE_SHOULDERS, _('Shoulders')),
+        (MUSCLE_BICEPS, _('Biceps')),
+        (MUSCLE_TRICEPS, _('Triceps')),
+        (MUSCLE_LOWER_BACK, _('Lower back')),
+        (MUSCLE_GLUTES, _('Glutes')),
+        (MUSCLE_LEGS, _('Legs')),
+        (MUSCLE_CALF, _('Calf')),
+        (MUSCLE_ABS, _('Abs')),
+    )
+
+    muscle = models.CharField(max_length=128, choices=MUSCLES)
 
     class Meta:
         db_table = 'exercises'

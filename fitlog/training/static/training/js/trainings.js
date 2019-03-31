@@ -305,44 +305,6 @@ const vm = new Vue({
     //     })
     //     .finally(() => this.filtering = false)
     // },
-
-    _updatePager(count) {
-      this.pager.count = count
-      this.pager.current = 1
-      this.pager.previous = this.pager.current > 1 ? this.pager.current - 1 : false
-      this.pager.next = (this.pager.current * this.pageSize) < this.pager.count ? this.pager.current + 1 : false
-
-      let totalPages = this.pager.count / this.pageSize
-
-      this.pager.pages = []
-      // Previous pages
-      while (this.pager.current -1 > 0 && (this.pager.pages.length < (this.pager.max / 2))) {
-        this.pager.pages.push(this.pager.current - 1)
-      }
-      // Current page
-      this.pager.pages.push(this.pager.current)
-      // Next pages
-      while (this.pager.current + 1 < totalPages && (this.pager.pages.length < this.pager.max)) {
-        this.pager.pages.push(this.pager.current + 1)
-      }
-    },
-
-    changePage(pageNum) {
-      this.paging = true
-
-      axios
-        .get('/api/trainings/', {
-          params: {
-            page: pageNum,
-            page_size: this.pageSize
-          }
-        })
-        .then(response => {
-          this.resources = response.data.results
-          this._updatePager(response.data.count)
-        })
-        .finally(() => this.paging = false)
-    }
   }
 })
 

@@ -12,14 +12,14 @@ class RoutineSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Routine
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'slug')
 
 
 class ExerciseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Exercise
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'slug', 'muscle')
 
 
 class ExerciseWorkoutSerializer(serializers.ModelSerializer):
@@ -98,15 +98,6 @@ class TrainingExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = TrainingExercise
         fields = ('id', 'exercise', 'training_exercise_sets')
-
-
-# class TrainingExerciseDetailSerializer(serializers.ModelSerializer):
-#     exercise = ExerciseSerializer()
-#     training_exercise_sets = TrainingExerciseSetSerializer(many=True)
-#
-#     class Meta:
-#         model = TrainingExercise
-#         fields = ('id', 'exercise', 'training_exercise_sets')
 
 
 class TrainingSerializer(serializers.ModelSerializer):

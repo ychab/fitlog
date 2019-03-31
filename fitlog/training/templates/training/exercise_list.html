@@ -1,27 +1,88 @@
-{% extends 'training/resource_list.html' %}
+{% extends 'base.html' %}
 {% load i18n static %}
 
 {% block title %}{% trans 'Exercises' %}{% endblock %}
-{% block table_title %}{% trans 'Exercises' %}{% endblock %}
+{% block content %}
+  <div class="card mb-3">
+    <div class="card-header">
+      <i class="fas fa-table"></i>
+      {% trans 'Exercises' %}
+    </div>
+    <div class="card-body">
+      <form v-on:submit.prevent="onSubmit">
+        <div v-if="loadingExercises || loadingMuscles" class="p-2">
+          <div class="d-flex align-items-center">
+            <strong>{% trans 'Loading...' %}</strong>
+            <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div v-if="!loadingExercises && !loadingMuscles" class="table-responsive">
+          <table class="table table-bordered" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>{% trans 'Name' %}</th>
+                <th>{% trans 'Muscle' %}</th>
+                <th>{% trans 'Action' %}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                  <td>
+                    <input class="form-control" v-bind:class="{ 'is-invalid' : 'name' in formErrors }" type="text" v-model="newResource.name" placeholder="{% trans 'Name' %}"/>
+                    <div v-if="'name' in formErrors" class="invalid-feedback">
+                      <span v-for="msg in formErrors.name">[[ msg ]]</span>
+                    </div>
+                  </td>
+                  <td>
+                    <select class="form-control"
+                            v-bind:class="{ 'is-invalid' : 'muscle' in formErrors }"
+                            v-model="newResource.muscle" required>
+                      <option v-for="(label, slug) in muscles" v-bind:value="slug">[[ label ]]</option>
+                    </select>
+                    <div v-if="'muscle' in formErrors" class="invalid-feedback">
+                      <span v-for="msg in formErrors.muscle">[[ msg ]]</span>
+                    </div>
+                  </td>
+                  <td>
+                    <button class="btn btn-link" v-on:click="createResource(newResource)" type="submit"><i class="fas fa-plus"></i></button>
+                    <div v-if="creating" class="spinner-border" role="status">
+                      <span class="sr-only">{% trans 'Loading...' %}</span>
+                    </div>
+                  </td>
+              </tr>
+              <tr v-for="resource in resources">
+                  <td>
+                    <input class="form-control" type="text" v-model="resource.name"/>
+                  </td>
+                  <td>
+                    <select class="form-control"
+                            v-model="resource.muscle" required>
+                      <option v-for="(label, slug) in muscles" v-bind:value="slug">[[ label ]]</option>
+                    </select>
+                  </td>
+                  <td>
+                    <button type="submit" class="btn btn-link" v-on:click="updateResource(resource)"><i class="fas fa-save"></i></button>
+                    <div v-if="updating == resource.id" class="spinner-border" role="status"></div>
+
+                    <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target="'#modal-delete-' + resource.id">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
+              </tr>
+            </tbody>
+          </table>
+          {% include 'training/pager.html' %}
+        </div>
+      </form>
+    </div>
+
+    {% include 'training/resource_delete_modal.html' %}
+
+  </div>
+{% endblock %}
 
 {% block extrabody %}
-{{ block.super }}
-
-<script type="text/javascript">
-  const app = new Vue({
-    ... baseResourceApp,
-    data() {
-      return {
-        ...baseResourceApp.data(),
-        resourcePath: 'exercises',
-        resourceFields: {
-          name: {
-            type: 'string',
-            default: ''
-          }
-        }
-      }
-    }
-  })
-</script>
+  <script src="{% static 'training/js/resource.js' %}"></script>
+  <script src="{% static 'training/js/exercise.js' %}"></script>
 {% endblock %}

@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 import factory
 from django.utils.translation import get_language, to_locale
 
-language = get_language() or 'fr-fr'
+language = get_language() or 'en-us'
 locale = to_locale(language)
 
 User = get_user_model()

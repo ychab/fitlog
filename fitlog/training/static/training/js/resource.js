@@ -16,12 +16,12 @@ const baseResourceApp = {
 
       pager: {
         count: null,
-        current: null,
-        size: null,
-        max: 10,
-        previous: null,
-        next: null,
-        pages: null,
+        size: 20,
+        delta: 2,
+        previous: false,
+        current: 1,
+        next: 2,
+        range: [],
       },
 
       resources: [],
@@ -47,6 +47,7 @@ const baseResourceApp = {
       .get('/api/' + this.resourcePath + '/')
       .then(response => {
         this.resources = response.data.results
+        this._updatePager(response.data.count)
       })
       .finally(() => this.loading = false)
   },
@@ -113,6 +114,7 @@ const baseResourceApp = {
         .get('/api/' + this.resourcePath + '/')
         .then(response => {
           this.resources = response.data.results
+          this._updatePager(response.data.count)
         })
         .finally(() => this.loading = false)
     },
@@ -154,6 +156,60 @@ const baseResourceApp = {
           this.refresh()
         })
         .finally(() => this.deleting = false)
+    },
+
+    _updatePager(count) {
+      this.pager.count = count
+      let last = Math.round(this.pager.count / this.pager.size)
+
+      this.pager.previous = this.pager.current > 1 ? this.pager.current - 1 : false
+      this.pager.next = (this.pager.current + 1) <= last ? this.pager.current + 1 : false
+
+      // Thanks bro!
+      // @see https://gist.github.com/kottenator/9d936eb3e4e3c3e02598
+      let left = this.pager.current - this.pager.delta
+      let right = this.pager.current + this.pager.delta + 1
+      let range = []
+      let rangeWithDots = []
+      let l;
+
+      for (let i = 1; i <= last; i++) {
+        if (i == 1 || i == last || i >= left && i < right) {
+          range.push(i);
+        }
+      }
+
+      for (let i of range) {
+        if (l) {
+          if (i - l === 2) {
+            rangeWithDots.push(l + 1);
+          } else if (i - l !== 1) {
+            rangeWithDots.push('...');
+          }
+        }
+        rangeWithDots.push(i);
+        l = i;
+      }
+
+      this.pager.range = rangeWithDots;
+    },
+
+    changePage(pageNum) {
+      this.paging = true
+      this.pager.current = pageNum
+
+      axios
+        .get('/api/' + this.resourcePath + '/', {
+          params: {
+            page: pageNum,
+            page_size: this.pager.size
+          }
+        })
+        .then(response => {
+          this.resources = response.data.results
+          this._updatePager(response.data.count)
+        })
+        .finally(() => this.paging = false)
     }
   }
 }

@@ -5,8 +5,11 @@ from django.db.models import Prefetch
 from django.views import generic
 
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.decorators import action
 
 from rest_framework.filters import OrderingFilter
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from .models import (
@@ -52,8 +55,12 @@ class ExerciseViewSet(ModelViewSet):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
     filter_backends = (OrderingFilter,)
-    ordering_fields = ('name',)
-    ordering = ('name',)
+    ordering_fields = ('muscle', 'name',)
+    ordering = ('muscle', 'name',)
+
+    @action(methods=['get'], detail=False)
+    def muscles(self, request, *args, **kwargs):
+        return Response(data=dict(Exercise.MUSCLES))
 
 
 class WorkoutViewSet(ModelViewSet):
