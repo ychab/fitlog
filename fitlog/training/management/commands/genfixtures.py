@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 
-from ...models import Training
 from ...fixtures import create_fixtures
+from ...models import Exercise, Routine, Training
 
 
 class Command(BaseCommand):
@@ -27,10 +27,27 @@ class Command(BaseCommand):
             default=False,
             help="Whether to delete all previous trainings before creating new ones.",
         )
+        parser.add_argument(
+            '--reset',
+            action='store_true',
+            default=False,
+            help="Whether to delete all model instances (routines, exercises, etc).",
+        )
 
     def handle(self, *args, **options):
 
-        if options.get('purge'):
+        if options.get('reset'):
+            confirm = input('Are you sure you want to delete all instances? (Y/n)')
+            if confirm == 'n':
+                return
+
+            Routine.objects.all().delete()
+            Exercise.objects.all().delete()
+            self.stdout.write(
+                self.style.WARNING('All previous model instances have been deleted.'),
+            )
+
+        elif options.get('purge'):
             Training.objects.all().delete()
             self.stdout.write(
                 self.style.WARNING('All previous trainings have been deleted.'),
@@ -39,5 +56,5 @@ class Command(BaseCommand):
         create_fixtures(limit=options['limit'], testing=options['testing'])
 
         self.stdout.write(
-            self.style.SUCCESS('Some trainings have been generated successfully.',),
+            self.style.SUCCESS('Data generated successfully.',),
         )

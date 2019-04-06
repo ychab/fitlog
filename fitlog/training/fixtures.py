@@ -40,6 +40,7 @@ def create_routines():
 def create_exercises():
     # Chest
     ExerciseFactory(muscle=Exercise.MUSCLE_CHEST, name=_('Bench press'), slug='bench-press')
+    ExerciseFactory(muscle=Exercise.MUSCLE_CHEST, name=_('Machine bench press'), slug='bench-press-machine')
     ExerciseFactory(muscle=Exercise.MUSCLE_CHEST, name=_('Incline press'), slug='incline-press')
     ExerciseFactory(muscle=Exercise.MUSCLE_CHEST, name=_('Decline press'), slug='decline-press')
     ExerciseFactory(muscle=Exercise.MUSCLE_CHEST, name=_('Dumbbell bench press'), slug='dumbbell-bench-press')
@@ -71,6 +72,8 @@ def create_exercises():
     ExerciseFactory(muscle=Exercise.MUSCLE_SHOULDERS, name=_('Cable lateral raise'), slug='cable-lateral-raise')
     ExerciseFactory(muscle=Exercise.MUSCLE_SHOULDERS, name=_('Bent over raise'), slug='bent-over-raise')
     ExerciseFactory(muscle=Exercise.MUSCLE_SHOULDERS, name=_('Cable bent over lateral raise'), slug='cable-bent-over-lateral-raise')
+    ExerciseFactory(muscle=Exercise.MUSCLE_SHOULDERS, name=_('Face pull'), slug='face-pull')
+    ExerciseFactory(muscle=Exercise.MUSCLE_SHOULDERS, name=_('Elevation Y'), slug='elevation-y')
     ExerciseFactory(muscle=Exercise.MUSCLE_SHOULDERS, name=_('Upright row'), slug='upright-row')
     ExerciseFactory(muscle=Exercise.MUSCLE_SHOULDERS, name=_('Rear deltoid machine'), slug='rear-deltoid-machine')
     ExerciseFactory(muscle=Exercise.MUSCLE_SHOULDERS, name=_('Shrug'), slug='shrug')
@@ -570,9 +573,14 @@ def create_workout_exercises():
                 'reps': 15,
                 'rest_period': 60,
             },
-            'crunches': {
+            'face-pull': {
+                'sets': 4,
+                'reps': 15,
+                'rest_period': 60,
+            },
+            'elevation-y': {
                 'sets': 3,
-                'reps': 20,
+                'reps': 12,
                 'rest_period': 60,
             },
         },
@@ -583,11 +591,17 @@ def create_workout_exercises():
                 'reps': 10,
                 'rest_period': 120,
             },
-            'leg-press': {
-                'sets': 5,
-                'reps': 10,
-                'rest_period': 120,
-            },
+            # Alternative
+            # 'leg-press': {
+            #     'sets': 5,
+            #     'reps': 10,
+            #     'rest_period': 120,
+            # },
+            'stiff-legged-deadlift': {
+                 'sets': 5,
+                 'reps': 10,
+                 'rest_period': 120,
+             },
             'leg-extension': {
                 'sets': 4,
                 'reps': 12,
@@ -611,6 +625,11 @@ def create_workout_exercises():
                 'reps': 10,
                 'rest_period': 120,
             },
+            'dumbbell-bench-press': {
+                'sets': 3,
+                'reps': 12,
+                'rest_period': 120,
+            },
             'dumbbell-incline-press': {
                 'sets': 5,
                 'reps': 10,
@@ -621,14 +640,14 @@ def create_workout_exercises():
                 'reps': 12,
                 'rest_period': 90,
             },
-            'crunches': {
-                'sets': 3,
-                'reps': 20,
-                'rest_period': 60,
-            },
         },
         'split-5d-arms': {
             # Triceps
+            'dips': {
+                'sets': 5,
+                'reps': 10,
+                'rest_period': 90,
+            },
             'skullcrushers': {
                 'sets': 5,
                 'reps': 12,
