@@ -60,6 +60,7 @@ const vm = new Vue({
       .get('/api/workouts/')
       .then(response => {
         this.resources = response.data.results
+        this._updatePager(response.data.count)
       })
       .finally(() => this.loadingWorkouts = false)
 

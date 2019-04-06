@@ -47,7 +47,7 @@ class RoutineViewSet(ModelViewSet):
     queryset = Routine.objects.all()
     serializer_class = RoutineSerializer
     filter_backends = (SearchFilter, OrderingFilter)
-    search_fields = ['name']
+    search_fields = ('name')
     ordering_fields = ('name',)
     ordering = ('name',)
 
@@ -56,7 +56,7 @@ class ExerciseViewSet(ModelViewSet):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
     filter_backends = (SearchFilter, OrderingFilter)
-    search_fields = ['name', 'muscle']
+    search_fields = ('name', 'muscle')
     ordering_fields = ('muscle', 'name',)
     ordering = ('muscle', 'name',)
 
@@ -67,7 +67,8 @@ class ExerciseViewSet(ModelViewSet):
 
 class WorkoutViewSet(ModelViewSet):
     queryset = Workout.objects.all()
-    filter_backends = (OrderingFilter,)
+    filter_backends = (SearchFilter, OrderingFilter)
+    search_fields = ('name',)
     ordering_fields = ('name',)
     ordering = ('name',)
 
@@ -91,7 +92,7 @@ class WorkoutViewSet(ModelViewSet):
 
 class TrainingViewSet(ModelViewSet):
     filter_backends = (DjangoFilterBackend, OrderingFilter,)
-    filterset_fields = ['workout']
+    filterset_fields = ('workout',)
     ordering_fields = ('date',)
     ordering = ('-date',)
 
