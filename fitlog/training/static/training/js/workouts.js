@@ -65,14 +65,24 @@ const vm = new Vue({
       .finally(() => this.loadingWorkouts = false)
 
     axios
-      .get('/api/routines/')
+      .get('/api/routines/', {
+        params: {
+          page: 1,
+          page_size: 10000  // All
+        }
+      })
       .then(response => {
         this.routines = response.data.results
       })
       .finally(() => this.loadingRoutines = false)
 
     axios
-      .get('/api/exercises/')
+      .get('/api/exercises/', {
+        params: {
+          page: 1,
+          page_size: 10000,  // All
+        }
+      })
       .then(response => {
         this.exercises = response.data.results
       })

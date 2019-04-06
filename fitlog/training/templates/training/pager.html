@@ -12,14 +12,14 @@
 <nav>
   <ul class="pagination justify-content-center">
 
-    <li class="page-item" v-bind:class="{ 'disabled' : !pager.previous }">
+    <li class="page-item" v-bind:class="{ 'disabled': !pager.previous }">
       <a v-on:click.stop="changePage(pager.previous)" class="page-link" href="#" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
         <span class="sr-only">{% trans 'Previous' %}</span>
       </a>
     </li>
 
-    <li v-for="page in pager.range" class="page-item" v-bind:class="{ 'active' : page == pager.current }">
+    <li class="page-item" v-for="page in pager.range" v-bind:class="{ 'active': page == pager.current, 'disabled': page === '...'}">
       <a class="page-link" href="#" v-on:click.stop="changePage(page)">[[ page ]]</a>
     </li>
 
