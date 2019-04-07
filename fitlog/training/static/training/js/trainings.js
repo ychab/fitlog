@@ -231,14 +231,26 @@ const vm = new Vue({
       }
     },
 
-    _resetExerciseChoices() {
+    _resetExerciseChoices(resource) {
+      let exercisesIdSelected = []
+
+      // For edit training, remove already selected exercises.
+      if (resource !== undefined) {
+        for (let training_exercise of resource.training_exercises) {
+          exercisesIdSelected.push(training_exercise.exercise)
+        }
+      }
+
       let exerciseChoices = {}
       for (let exercise of this.exercises) {
-        exerciseChoices[exercise.id] = exercise.name
+        if (exercisesIdSelected.indexOf(exercise.id) === -1) {
+          exerciseChoices[exercise.id] = exercise.name
+        }
       }
       this.exerciseChoices = exerciseChoices
+      this.exerciseSelector = null
     },
-    _resetResource() {
+    _resetNewResource() {
       let newResource = {}
       for (const fieldName in this.resourceFields) {
         let field = this.resourceFields[fieldName]
@@ -250,9 +262,8 @@ const vm = new Vue({
       this.newResource = newResource
     },
     reset() {
+      this._resetNewResource()
       this._resetExerciseChoices()
-      this._resetResource()
-      this.exerciseSelector = null
     },
 
     createResource(resource) {
