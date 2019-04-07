@@ -1,0 +1,700 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-07 15:53+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: fitlog/core/views.py:19
+msgid "Please create routines."
+msgstr "Merci de créer des routines."
+
+#: fitlog/core/views.py:23
+msgid "Please create exercises."
+msgstr "Merci de créer des exercices."
+
+#: fitlog/templates/base.html:34 fitlog/templates/logout.html:8
+#: fitlog/training/templates/training/resource_delete_modal.html:16
+#: fitlog/training/templates/training/training_create_modal.html:161
+#: fitlog/training/templates/training/training_detail_modal.html:56
+#: fitlog/training/templates/training/training_update_modal.html:162
+#: fitlog/training/templates/training/workout_create_modal.html:106
+#: fitlog/training/templates/training/workout_update_modal.html:106
+msgid "Close"
+msgstr "Fermer"
+
+#: fitlog/templates/logout.html:7
+msgid "Log out?"
+msgstr "Se déconnecter ?"
+
+#: fitlog/templates/logout.html:12
+msgid "Are you sure to logout?"
+msgstr "Êtes-vous sûr de vous déconnecter ?"
+
+#: fitlog/templates/logout.html:14
+msgid "Cancel"
+msgstr "Annuler"
+
+#: fitlog/templates/logout.html:15 fitlog/templates/navbar.html:16
+msgid "Log out"
+msgstr "Déconnexion"
+
+#: fitlog/templates/registration/login.html:11
+#: fitlog/templates/registration/login.html:23
+#: fitlog/templates/registration/login.html:39
+msgid "Log in"
+msgstr "Se connecter"
+
+#: fitlog/templates/registration/login.html:29
+#: fitlog/templates/registration/login.html:30
+msgid "Username"
+msgstr "Nom utilisateur"
+
+#: fitlog/templates/registration/login.html:36
+msgid "Password"
+msgstr "Mot de passe"
+
+#: fitlog/templates/sidebar.html:12
+#: fitlog/training/templates/training/training_list.html:4
+#: fitlog/training/templates/training/training_list.html:88
+msgid "Trainings"
+msgstr "Entrainements"
+
+#: fitlog/templates/sidebar.html:15
+msgid "List"
+msgstr "Liste"
+
+#: fitlog/templates/sidebar.html:17
+msgid "Add for"
+msgstr "Ajouter pour"
+
+#: fitlog/templates/sidebar.html:27
+#: fitlog/training/templates/training/workout_list.html:4
+#: fitlog/training/templates/training/workout_list.html:10
+msgid "Workouts"
+msgstr "Workouts"
+
+#: fitlog/templates/sidebar.html:34 fitlog/training/admin.py:46
+#: fitlog/training/templates/training/exercise_list.html:4
+#: fitlog/training/templates/training/exercise_list.html:10
+#: fitlog/training/templates/training/workout_create_modal.html:42
+#: fitlog/training/templates/training/workout_update_modal.html:42
+msgid "Exercises"
+msgstr "Exercices"
+
+#: fitlog/templates/sidebar.html:41
+#: fitlog/training/templates/training/routine_list.html:4
+#: fitlog/training/templates/training/routine_list.html:5
+msgid "Routines"
+msgstr "Routines"
+
+#: fitlog/training/fixtures.py:36
+msgid "Half body"
+msgstr "Half body"
+
+#: fitlog/training/fixtures.py:37 fitlog/training/fixtures.py:166
+msgid "Full body"
+msgstr "Full body"
+
+#: fitlog/training/fixtures.py:38
+msgid "Push Pull Legs"
+msgstr "Push Pull Legs"
+
+#: fitlog/training/fixtures.py:39
+msgid "Split 3 days"
+msgstr "Split 3 jours"
+
+#: fitlog/training/fixtures.py:40
+msgid "Split 5 days"
+msgstr "Split 5 jours"
+
+#: fitlog/training/fixtures.py:46
+msgid "Bench press"
+msgstr "Développé couché"
+
+#: fitlog/training/fixtures.py:47
+msgid "Machine bench press"
+msgstr "Machine à développé couché"
+
+#: fitlog/training/fixtures.py:48
+msgid "Incline press"
+msgstr "Développé incliné"
+
+#: fitlog/training/fixtures.py:49
+msgid "Decline press"
+msgstr "Développé décliné"
+
+#: fitlog/training/fixtures.py:50
+msgid "Dumbbell bench press"
+msgstr "Développé couché haltère"
+
+#: fitlog/training/fixtures.py:51
+msgid "Dumbbell incline press"
+msgstr "Développé incliné haltère"
+
+#: fitlog/training/fixtures.py:52
+msgid "Dumbbell decline press"
+msgstr "Développé décliné haltère"
+
+#: fitlog/training/fixtures.py:53
+msgid "Push ups"
+msgstr "Pompes"
+
+#: fitlog/training/fixtures.py:54
+msgid "Fly"
+msgstr "Écarté couché"
+
+#: fitlog/training/fixtures.py:55
+msgid "Peck deck"
+msgstr "Peck deck"
+
+#: fitlog/training/fixtures.py:56
+msgid "Cable crossover"
+msgstr "Écarté à la poulie vis-à-vis"
+
+#: fitlog/training/fixtures.py:59
+msgid "Deadlift"
+msgstr "Soulevé de terre"
+
+#: fitlog/training/fixtures.py:60
+msgid "Chin up"
+msgstr "Traction pronation"
+
+#: fitlog/training/fixtures.py:61
+msgid "Pull up"
+msgstr "Traction supination"
+
+#: fitlog/training/fixtures.py:62
+msgid "Lat pulldown"
+msgstr "Tirage poitrine"
+
+#: fitlog/training/fixtures.py:63
+msgid "Close grip pulldown"
+msgstr "Tirage poulie haute poignée serrée"
+
+#: fitlog/training/fixtures.py:64
+msgid "Pullover"
+msgstr "Pull-over"
+
+#: fitlog/training/fixtures.py:65
+msgid "Cable pullover"
+msgstr "Pull-over poulie"
+
+#: fitlog/training/fixtures.py:66
+msgid "Cable row"
+msgstr "Tirage poulie basse"
+
+#: fitlog/training/fixtures.py:67
+msgid "Dumbbell row"
+msgstr "Rowing haltère"
+
+#: fitlog/training/fixtures.py:68
+msgid "Bent over barbell row"
+msgstr "Rowing yates"
+
+#: fitlog/training/fixtures.py:69
+msgid "T-bar row"
+msgstr "Tirage T-bar"
+
+#: fitlog/training/fixtures.py:72
+msgid "Dumbbell press"
+msgstr "Développé militaire"
+
+#: fitlog/training/fixtures.py:73
+msgid "Arnold press"
+msgstr "Développé Arnold"
+
+#: fitlog/training/fixtures.py:74
+msgid "Front raise"
+msgstr "Élévation frontale"
+
+#: fitlog/training/fixtures.py:75
+msgid "Lateral raise"
+msgstr "Élévation latérale"
+
+#: fitlog/training/fixtures.py:76
+msgid "Cable lateral raise"
+msgstr "Élévation latérale poulie"
+
+#: fitlog/training/fixtures.py:77
+msgid "Bent over raise"
+msgstr "Oiseau"
+
+#: fitlog/training/fixtures.py:78
+msgid "Cable bent over lateral raise"
+msgstr "Oiseau poulie"
+
+#: fitlog/training/fixtures.py:79
+msgid "Face pull"
+msgstr "Face-pull"
+
+#: fitlog/training/fixtures.py:80
+msgid "Elevation Y"
+msgstr "Élévation Y"
+
+#: fitlog/training/fixtures.py:81
+msgid "Upright row"
+msgstr "Rowing menton"
+
+#: fitlog/training/fixtures.py:82
+msgid "Rear deltoid machine"
+msgstr "Arrière deltoïd machine"
+
+#: fitlog/training/fixtures.py:83
+msgid "Shrug"
+msgstr "Shrug"
+
+#: fitlog/training/fixtures.py:86
+msgid "Dumbbell curl"
+msgstr "Curl haltère"
+
+#: fitlog/training/fixtures.py:87
+msgid "Incline dumbbell curl"
+msgstr "Curl incliné"
+
+#: fitlog/training/fixtures.py:88
+msgid "Concentration curl"
+msgstr "Curl concentration"
+
+#: fitlog/training/fixtures.py:89
+msgid "Hammer curl"
+msgstr "Curl marteau"
+
+#: fitlog/training/fixtures.py:90
+msgid "Cable curl"
+msgstr "Curl poulie"
+
+#: fitlog/training/fixtures.py:91
+msgid "Overhead cable curl"
+msgstr "Curl poulie haute"
+
+#: fitlog/training/fixtures.py:92
+msgid "Barbell curl"
+msgstr "Curl barre"
+
+#: fitlog/training/fixtures.py:93
+msgid "Reverse curl"
+msgstr "Curl inversé"
+
+#: fitlog/training/fixtures.py:96
+msgid "Skullcrushers"
+msgstr "Magic triceps"
+
+#: fitlog/training/fixtures.py:97
+msgid "Lying triceps extension"
+msgstr "Barre front"
+
+#: fitlog/training/fixtures.py:98
+msgid "Triceps pushdown"
+msgstr "Triceps extension poulie"
+
+#: fitlog/training/fixtures.py:99
+msgid "Reverse grip triceps pushdown"
+msgstr "Triceps extension poulie supination"
+
+#: fitlog/training/fixtures.py:100
+msgid "Dumbbell triceps extension"
+msgstr "Triceps extension nuque"
+
+#: fitlog/training/fixtures.py:101
+msgid "Cable triceps extension"
+msgstr "Extension triceps poulie"
+
+#: fitlog/training/fixtures.py:102
+msgid "French press"
+msgstr "Barre front incliné"
+
+#: fitlog/training/fixtures.py:103
+msgid "Kick back"
+msgstr "Kick back"
+
+#: fitlog/training/fixtures.py:104
+msgid "Dips"
+msgstr "Dips"
+
+#: fitlog/training/fixtures.py:105
+msgid "Close grip bench press"
+msgstr "Développé couché prise serrée"
+
+#: fitlog/training/fixtures.py:108
+msgid "Back squat"
+msgstr "Back squat"
+
+#: fitlog/training/fixtures.py:109
+msgid "Front squat"
+msgstr "Front squat"
+
+#: fitlog/training/fixtures.py:110
+msgid "Leg press"
+msgstr "Presse à cuisse"
+
+#: fitlog/training/fixtures.py:111
+msgid "Leg extension"
+msgstr "Leg extension"
+
+#: fitlog/training/fixtures.py:112
+msgid "Leg curl"
+msgstr "Leg curl"
+
+#: fitlog/training/fixtures.py:113
+msgid "Lunge"
+msgstr "Fentes"
+
+#: fitlog/training/fixtures.py:114
+msgid "Stiff legged deadlift"
+msgstr "Soulevé de terre jambes tendues"
+
+#: fitlog/training/fixtures.py:115
+msgid "Plié squat"
+msgstr "Soulevé de terre sumo"
+
+#: fitlog/training/fixtures.py:116
+msgid "Machine adductor"
+msgstr "Machine à adducteur"
+
+#: fitlog/training/fixtures.py:117
+msgid "Machine abductor"
+msgstr "Machine à abducteur"
+
+#: fitlog/training/fixtures.py:120
+msgid "calf extension"
+msgstr "Extension mollets"
+
+#: fitlog/training/fixtures.py:123
+msgid "Hip trust"
+msgstr "Hip trust"
+
+#: fitlog/training/fixtures.py:124
+msgid "Hip extension"
+msgstr "Extension hanche"
+
+#: fitlog/training/fixtures.py:125
+msgid "Lateral leg raise"
+msgstr "Élévation lateral ejambe"
+
+#: fitlog/training/fixtures.py:128
+msgid "Hyperextension"
+msgstr "Extension lombaire"
+
+#: fitlog/training/fixtures.py:129
+msgid "Good morning"
+msgstr "Good morning"
+
+#: fitlog/training/fixtures.py:132
+msgid "Crunches"
+msgstr "Crunches"
+
+#: fitlog/training/fixtures.py:133
+msgid "Sit up"
+msgstr "Sit up"
+
+#: fitlog/training/fixtures.py:134
+msgid "Hanging knee raise"
+msgstr "Relevé genoux"
+
+#: fitlog/training/fixtures.py:135
+msgid "Side bend"
+msgstr "Flexion latérale buste"
+
+#: fitlog/training/fixtures.py:149
+msgid "Push"
+msgstr "Push"
+
+#: fitlog/training/fixtures.py:154
+msgid "Pull"
+msgstr "Pull"
+
+#: fitlog/training/fixtures.py:159 fitlog/training/models.py:51
+msgid "Legs"
+msgstr "Legs"
+
+#: fitlog/training/fixtures.py:173
+msgid "Half body top"
+msgstr "Half body haut"
+
+#: fitlog/training/fixtures.py:178
+msgid "Half body bottom"
+msgstr "Half body bas"
+
+#: fitlog/training/fixtures.py:185
+msgid "Split 3 days Chest/Biceps/Abs"
+msgstr "Split 3 jours Pec/Biceps/Abdos"
+
+#: fitlog/training/fixtures.py:190
+msgid "Split 3 days Legs/Calf"
+msgstr "Split 3 jours Jambes/Mollets"
+
+#: fitlog/training/fixtures.py:195
+msgid "Split 3 days Back/Shoulders/Triceps"
+msgstr "Split 3 jours Dos/Épaules/Triceps"
+
+#: fitlog/training/fixtures.py:202
+msgid "Split 5 days Back"
+msgstr "Split 5 jours Dos"
+
+#: fitlog/training/fixtures.py:207
+msgid "Split 5 days Shoulders"
+msgstr "Split 5 jours Épaules"
+
+#: fitlog/training/fixtures.py:212
+msgid "Split 5 days Legs"
+msgstr "Split 5 jours Jambes"
+
+#: fitlog/training/fixtures.py:217
+msgid "Split 5 days Chest"
+msgstr "Split 5 jours Pectoraux"
+
+#: fitlog/training/fixtures.py:222
+msgid "Split 5 days Arms"
+msgstr "Split 5 jours Bras"
+
+#: fitlog/training/models.py:10
+#: fitlog/training/templates/training/exercise_list.html:32
+#: fitlog/training/templates/training/exercise_list.html:40
+#: fitlog/training/templates/training/resource_list.html:31
+#: fitlog/training/templates/training/resource_list.html:38
+#: fitlog/training/templates/training/workout_create_modal.html:24
+#: fitlog/training/templates/training/workout_create_modal.html:25
+#: fitlog/training/templates/training/workout_update_modal.html:24
+#: fitlog/training/templates/training/workout_update_modal.html:25
+msgid "Name"
+msgstr "Nom"
+
+#: fitlog/training/models.py:44
+msgid "Chest"
+msgstr "Pectoraux"
+
+#: fitlog/training/models.py:45
+msgid "Back"
+msgstr "Dos"
+
+#: fitlog/training/models.py:46
+msgid "Shoulders"
+msgstr "Épaules"
+
+#: fitlog/training/models.py:47
+msgid "Biceps"
+msgstr "Biceps"
+
+#: fitlog/training/models.py:48
+msgid "Triceps"
+msgstr "Triceps"
+
+#: fitlog/training/models.py:49
+msgid "Lower back"
+msgstr "Lombaires"
+
+#: fitlog/training/models.py:50
+msgid "Glutes"
+msgstr "Fesses"
+
+#: fitlog/training/models.py:52
+msgid "Calf"
+msgstr "Mollets"
+
+#: fitlog/training/models.py:53
+msgid "Abs"
+msgstr "Abdos"
+
+#: fitlog/training/templates/training/exercise_list.html:21
+#: fitlog/training/templates/training/exercise_list.html:58
+#: fitlog/training/templates/training/pager.html:37
+#: fitlog/training/templates/training/resource_list.html:20
+#: fitlog/training/templates/training/resource_list.html:46
+#: fitlog/training/templates/training/training_list.html:102
+#: fitlog/training/templates/training/workout_list.html:28
+msgid "Loading..."
+msgstr "Chargement..."
+
+#: fitlog/training/templates/training/exercise_list.html:33
+msgid "Muscle"
+msgstr "Muscle"
+
+#: fitlog/training/templates/training/exercise_list.html:34
+#: fitlog/training/templates/training/resource_list.html:32
+msgid "Action"
+msgstr "Action"
+
+#: fitlog/training/templates/training/pager.html:18
+msgid "Previous"
+msgstr "Précédent"
+
+#: fitlog/training/templates/training/pager.html:29
+msgid "Next"
+msgstr "Suivant"
+
+#: fitlog/training/templates/training/resource_delete_modal.html:7
+#: fitlog/training/templates/training/resource_delete_modal.html:18
+#: fitlog/training/templates/training/workout_create_modal.html:90
+#: fitlog/training/templates/training/workout_update_modal.html:90
+msgid "Delete"
+msgstr "Supprimer"
+
+#: fitlog/training/templates/training/resource_delete_modal.html:13
+msgid "Are you sure you want to delete it?"
+msgstr "Êtes-vous sûr de vouloir supprimer ?"
+
+#: fitlog/training/templates/training/resource_delete_modal.html:21
+#: fitlog/training/templates/training/training_create_modal.html:166
+#: fitlog/training/templates/training/training_update_modal.html:167
+#: fitlog/training/templates/training/workout_create_modal.html:111
+#: fitlog/training/templates/training/workout_update_modal.html:111
+msgid "Wait..."
+msgstr "Patientez..."
+
+#: fitlog/training/templates/training/resource_list.html:4
+msgid "Resources"
+msgstr "Ressources"
+
+#: fitlog/training/templates/training/search.html:6
+msgid "Search for..."
+msgstr "Rechercher..."
+
+#: fitlog/training/templates/training/training_create_modal.html:7
+msgid "Log a training"
+msgstr "Noter un entraînement"
+
+#: fitlog/training/templates/training/training_create_modal.html:25
+#: fitlog/training/templates/training/training_create_modal.html:26
+#: fitlog/training/templates/training/training_detail_modal.html:17
+#: fitlog/training/templates/training/training_list.html:111
+#: fitlog/training/templates/training/training_update_modal.html:25
+#: fitlog/training/templates/training/training_update_modal.html:26
+msgid "Date"
+msgstr "Date"
+
+#: fitlog/training/templates/training/training_create_modal.html:36
+#: fitlog/training/templates/training/training_detail_modal.html:22
+#: fitlog/training/templates/training/training_list.html:112
+#: fitlog/training/templates/training/training_update_modal.html:36
+msgid "Workout"
+msgstr "Workout"
+
+#: fitlog/training/templates/training/training_create_modal.html:41
+#: fitlog/training/templates/training/training_list.html:124
+#: fitlog/training/templates/training/training_update_modal.html:41
+msgid "Freestyle"
+msgstr "Freestyle"
+
+#: fitlog/training/templates/training/training_create_modal.html:50
+#: fitlog/training/templates/training/training_update_modal.html:50
+msgid "Exercises sets"
+msgstr "Séries d'exercices"
+
+#: fitlog/training/templates/training/training_create_modal.html:66
+#: fitlog/training/templates/training/training_create_modal.html:119
+#: fitlog/training/templates/training/training_update_modal.html:66
+#: fitlog/training/templates/training/training_update_modal.html:119
+msgid "Remove"
+msgstr "Enlever"
+
+#: fitlog/training/templates/training/training_create_modal.html:127
+#: fitlog/training/templates/training/training_update_modal.html:127
+msgid "Add set"
+msgstr "Ajouter une série"
+
+#: fitlog/training/templates/training/training_create_modal.html:150
+#: fitlog/training/templates/training/training_update_modal.html:150
+msgid "Add exercise"
+msgstr "Ajouter un exercice"
+
+#: fitlog/training/templates/training/training_create_modal.html:163
+#: fitlog/training/templates/training/workout_create_modal.html:108
+msgid "Create"
+msgstr "Créer"
+
+#: fitlog/training/templates/training/training_detail_modal.html:8
+msgid "Training detail"
+msgstr "Détail de l'entraînement"
+
+#: fitlog/training/templates/training/training_detail_modal.html:36
+#: fitlog/training/templates/training/workout_create_modal.html:58
+#: fitlog/training/templates/training/workout_update_modal.html:58
+msgid "Order"
+msgstr "Ordre"
+
+#: fitlog/training/templates/training/training_detail_modal.html:37
+#: fitlog/training/templates/training/workout_create_modal.html:74
+#: fitlog/training/templates/training/workout_update_modal.html:74
+msgid "Reps"
+msgstr "Répétitions"
+
+#: fitlog/training/templates/training/training_detail_modal.html:38
+msgid "Weight"
+msgstr "Poids"
+
+#: fitlog/training/templates/training/training_detail_modal.html:39
+#: fitlog/training/templates/training/workout_create_modal.html:82
+#: fitlog/training/templates/training/workout_update_modal.html:82
+msgid "Rest period"
+msgstr "Temps repos"
+
+#: fitlog/training/templates/training/training_list.html:113
+msgid "Total sets"
+msgstr "Total séries"
+
+#: fitlog/training/templates/training/training_list.html:114
+msgid "Total reps"
+msgstr "Total réps"
+
+#: fitlog/training/templates/training/training_list.html:115
+msgid "Total weights"
+msgstr "Total poids"
+
+#: fitlog/training/templates/training/training_list.html:116
+msgid "Avg rest"
+msgstr "Repos moyen"
+
+#: fitlog/training/templates/training/training_list.html:117
+msgid "Actions"
+msgstr "Actions"
+
+#: fitlog/training/templates/training/training_update_modal.html:7
+msgid "Update training"
+msgstr "Mise à jour de l'entraînement"
+
+#: fitlog/training/templates/training/training_update_modal.html:164
+#: fitlog/training/templates/training/workout_update_modal.html:108
+msgid "Save"
+msgstr "Enregistrer"
+
+#: fitlog/training/templates/training/workout_create_modal.html:7
+msgid "Create a workout"
+msgstr "Créer un workout"
+
+#: fitlog/training/templates/training/workout_create_modal.html:32
+#: fitlog/training/templates/training/workout_update_modal.html:32
+msgid "Routine"
+msgstr "Routine"
+
+#: fitlog/training/templates/training/workout_create_modal.html:48
+#: fitlog/training/templates/training/workout_update_modal.html:48
+msgid "Exercise"
+msgstr "Exercice"
+
+#: fitlog/training/templates/training/workout_create_modal.html:66
+#: fitlog/training/templates/training/workout_update_modal.html:66
+msgid "Sets"
+msgstr "Séries"
+
+#: fitlog/training/templates/training/workout_create_modal.html:96
+#: fitlog/training/templates/training/workout_update_modal.html:96
+msgid "Add"
+msgstr "Ajouter"
+
+#: fitlog/training/templates/training/workout_update_modal.html:7
+msgid "Update workout"
+msgstr "Mise à jour du workout"
