@@ -31,7 +31,7 @@ class Command(BaseCommand):
             '--reset',
             action='store_true',
             default=False,
-            help="Whether to delete all model instances (routines, exercises, etc).",
+            help="Whether to delete all model instances (routines, exercises, etc) and exit.",
         )
 
     def handle(self, *args, **options):
@@ -46,8 +46,9 @@ class Command(BaseCommand):
             self.stdout.write(
                 self.style.WARNING('All previous model instances have been deleted.'),
             )
+            return
 
-        elif options.get('purge'):
+        if options.get('purge'):
             Training.objects.all().delete()
             self.stdout.write(
                 self.style.WARNING('All previous trainings have been deleted.'),

@@ -8,11 +8,15 @@ https://www.fitnessfriandises.fr/2011/07/lexique-francais-anglais-des-exercices-
 
 """
 import logging
+from datetime import date, timedelta
 
 from django.utils.translation import ugettext_lazy as _
 
-from .factories import ExerciseFactory, RoutineFactory, WorkoutFactory, WorkoutExerciseFactory, TrainingFactory, \
-    TrainingExerciseFactory, TrainingExerciseSetFactory
+from .factories import (
+    ExerciseFactory, RoutineFactory, TrainingExerciseFactory,
+    TrainingExerciseSetFactory, TrainingFactory, WorkoutFactory,
+    WorkoutExerciseFactory,
+)
 from .models import Exercise, Routine, Workout, WorkoutExercise
 
 logger = logging.getLogger('fitlog.generator')
@@ -90,10 +94,11 @@ def create_exercises():
 
     # Triceps
     ExerciseFactory(muscle=Exercise.MUSCLE_TRICEPS, name=_('Skullcrushers'), slug='skullcrushers')
+    ExerciseFactory(muscle=Exercise.MUSCLE_TRICEPS, name=_('Lying triceps extension'), slug='lying-triceps-extension')
     ExerciseFactory(muscle=Exercise.MUSCLE_TRICEPS, name=_('Triceps pushdown'), slug='triceps-pushdown')
     ExerciseFactory(muscle=Exercise.MUSCLE_TRICEPS, name=_('Reverse grip triceps pushdown'), slug='reverse-grip-triceps-pushdown')
-    ExerciseFactory(muscle=Exercise.MUSCLE_TRICEPS, name=_('Lying triceps extension'), slug='lying-triceps-extension')
     ExerciseFactory(muscle=Exercise.MUSCLE_TRICEPS, name=_('Dumbbell triceps extension'), slug='dumbbell-triceps-extension')
+    ExerciseFactory(muscle=Exercise.MUSCLE_TRICEPS, name=_('Cable triceps extension'), slug='cable-triceps-extension')
     ExerciseFactory(muscle=Exercise.MUSCLE_TRICEPS, name=_('French press'), slug='french-press')
     ExerciseFactory(muscle=Exercise.MUSCLE_TRICEPS, name=_('Kick back'), slug='kick-back')
     ExerciseFactory(muscle=Exercise.MUSCLE_TRICEPS, name=_('Dips'), slug='dips')
@@ -334,7 +339,7 @@ def create_workout_exercises():
             },
         },
         ### Full body ###
-        'push': {
+        'full-body': {
             # Legs
             'back-squat': {
                 'sets': 5,
@@ -716,9 +721,12 @@ def create_training(limit=10):
         workout_exercises = WorkoutExercise.objects.filter(workout=workout)
 
         logger.info('... {} ...'.format(workout))
-        for i in range(0, limit):
-            training = TrainingFactory(workout=workout)
-            logger.info('> {} training(s)'.format(i + 1))
+        for i in range(1, limit + 1):
+            training = TrainingFactory(
+                workout=workout,
+                date=date.today() - timedelta(days=i),
+            )
+            logger.info('> {} training(s)'.format(i))
 
             for workout_exercise in  workout_exercises:
                 training_exercise = TrainingExerciseFactory(
