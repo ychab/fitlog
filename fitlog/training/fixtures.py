@@ -626,7 +626,7 @@ def create_workout_exercises():
         },
         'split-5d-chest': {
             'bench-press': {
-                'sets': 5,
+                'sets': 4,
                 'reps': 10,
                 'rest_period': 120,
             },
@@ -637,6 +637,12 @@ def create_workout_exercises():
             },
             'dumbbell-incline-press': {
                 'sets': 5,
+                'reps': 10,
+                'rest_period': 120,
+            },
+            # Unilaterals
+            'bench-press-machine': {
+                'sets': 4,
                 'reps': 10,
                 'rest_period': 120,
             },

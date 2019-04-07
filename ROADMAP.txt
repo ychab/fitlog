@@ -25,3 +25,5 @@
 * add a refresh link, which redo the $vm.mount() or something like that
 * list of exercises grouped by muscles, and ordered alpha
 * autocomplete on list of model instances like exercises
+* add a note on workout exercise set
+* dat frmat in front (training list at least)

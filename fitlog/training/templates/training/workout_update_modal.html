@@ -42,7 +42,7 @@
             <div class="card-header">{% trans 'Exercises' %}</div>
             <div class="card-body">
 
-              <div v-for="(workoutExercise, index) in resource.workout_exercises" class="form-row border border-secondary rounded p-2">
+              <div v-for="(workoutExercise, index) in resource.workout_exercises" class="form-row border border-secondary rounded p-2 m-2">
 
                 <div class="form-group col-2">
                   <label v-bind:for="'exercise-' + index">{% trans 'Exercise' %}</label>
