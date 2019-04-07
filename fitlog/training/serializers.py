@@ -26,7 +26,7 @@ class ExerciseWorkoutSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = WorkoutExercise
-        fields = ('id', 'exercise', 'order', 'sets', 'reps', 'rest_period')
+        fields = ('id', 'exercise', 'unilateral', 'order', 'sets', 'reps', 'rest_period')
 
 
 class ExerciseWorkoutDetailSerializer(serializers.ModelSerializer):
@@ -34,7 +34,7 @@ class ExerciseWorkoutDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = WorkoutExercise
-        fields = ('id', 'exercise', 'order', 'sets', 'reps', 'rest_period')
+        fields = ('id', 'exercise', 'unilateral', 'order', 'sets', 'reps', 'rest_period')
 
 
 class WorkoutSerializer(serializers.ModelSerializer):
@@ -89,7 +89,7 @@ class TrainingExerciseSetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TrainingExerciseSet
-        fields = ('id', 'order', 'reps', 'weight', 'rest_period', 'tempo')
+        fields = ('id', 'unilateral', 'order', 'reps', 'weight', 'rest_period', 'tempo')
 
 
 class TrainingExerciseSerializer(serializers.ModelSerializer):

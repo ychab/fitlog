@@ -13,28 +13,21 @@
   <ul class="pagination justify-content-center">
 
     <li class="page-item" v-bind:class="{ 'disabled': !pager.previous }">
-      <a v-on:click.stop="changePage(pager.previous)" class="page-link" href="#" aria-label="Previous">
+      <a v-on:click.stop.prevent="changePage(pager.previous)" class="page-link" href="#spinner-results" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
         <span class="sr-only">{% trans 'Previous' %}</span>
       </a>
     </li>
 
     <li class="page-item" v-for="page in pager.range" v-bind:class="{ 'active': page == pager.current, 'disabled': page === '...'}">
-      <a class="page-link" href="#" v-on:click.stop="changePage(page)">[[ page ]]</a>
+      <a class="page-link" href="#spinner-results" v-on:click.stop.prevent="changePage(page)">[[ page ]]</a>
     </li>
 
     <li class="page-item" v-bind:class="{ 'disabled' : !pager.next }">
-      <a v-on:click.stop="changePage(pager.next)" class="page-link" href="#" aria-label="Next">
+      <a v-on:click.stop.prevent="changePage(pager.next)" class="page-link" href="#spinner-results" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
         <span class="sr-only">{% trans 'Next' %}</span>
       </a>
     </li>
   </ul>
 </nav>
-
-<div v-if="paging" class="p-2">
-  <div class="d-flex align-items-center">
-    <strong>{% trans 'Loading...' %}</strong>
-    <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-  </div>
-</div>

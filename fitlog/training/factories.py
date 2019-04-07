@@ -59,6 +59,7 @@ class WorkoutExerciseFactory(factory.DjangoModelFactory):
 
     workout = factory.SubFactory(WorkoutFactory)
     exercise = factory.SubFactory(ExerciseFactory)
+    unilateral = fuzzy.FuzzyChoice([False, False, False, False, True])
     order = factory.Sequence(lambda n: n)
     sets = fuzzy.FuzzyInteger(1, 5)
     reps = fuzzy.FuzzyInteger(6, 15)
@@ -88,6 +89,7 @@ class TrainingExerciseSetFactory(factory.DjangoModelFactory):
         model = TrainingExerciseSet
 
     training_exercise = factory.SubFactory(TrainingExerciseFactory)
+    unilateral = fuzzy.FuzzyChoice([False, False, False, False, True])
     order = factory.Sequence(lambda n: n)
     reps = fuzzy.FuzzyInteger(6, 15)
     weight = fuzzy.FuzzyFloat(4, 150, precision=2)

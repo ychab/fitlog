@@ -76,6 +76,7 @@ class TrainingExerciseSetAdmin(admin.ModelAdmin):
     list_display = [
         'id',
         'training_exercise',
+        'unilateral',
         'order',
         'reps',
         'weight',

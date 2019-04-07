@@ -16,7 +16,7 @@
 
     <div class="card-body">
 
-      <div v-if="loadingExercises || loadingMuscles" class="p-2">
+      <div id="spinner-results" v-if="loadingExercises || loadingMuscles" class="p-2">
         <div class="d-flex align-items-center">
           <strong>{% trans 'Loading...' %}</strong>
           <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>

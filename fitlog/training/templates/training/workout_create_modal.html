@@ -42,7 +42,7 @@
             <div class="card-header">{% trans 'Exercises' %}</div>
             <div class="card-body">
 
-              <div v-for="(newWorkoutExercise, index) in newResource.workout_exercises" class="form-row">
+              <div v-for="(newWorkoutExercise, index) in newResource.workout_exercises" class="form-row border border-secondary rounded p-2">
 
                 <div class="form-group col-2">
                   <label v-bind:for="'exercise-' + index">{% trans 'Exercise' %}</label>
@@ -55,6 +55,20 @@
                 </div>
 
                 <div class="form-group col-2">
+                  <div class="form-check">
+                    <input class="form-check-input"
+                           type="checkbox"
+                           v-model="newWorkoutExercise.unilateral"
+                           v-bind:id="'unilateral-' + index"
+                           v-bind:class="{ 'is-invalid' : hasFormFieldErrors('workout_exercises.' + index + '.unilateral') }">
+                    <label v-bind:for="'unilateral-' + index">{% trans 'Unilateral?' %}</label>
+                  </div>
+                  <div class="invalid-feedback" v-if="hasFormFieldErrors('workout_exercises.' + index + '.unilateral')">
+                    <span v-for="msg in formErrors.workout_exercises[index].unilateral">[[ msg ]]</span>
+                  </div>
+                </div>
+
+                <div class="form-group col-1">
                   <label v-bind:for="'order-' + index">{% trans 'Order' %}</label>
                   <input class="form-control" type="number" v-bind:id="'order-' + index" v-model.number="newWorkoutExercise.order" v-bind:class="{ 'is-invalid' : hasFormFieldErrors('workout_exercises.' + index + '.order') }" min="0">
                   <div class="invalid-feedback" v-if="hasFormFieldErrors('workout_exercises.' + index + '.order')">
@@ -62,7 +76,7 @@
                   </div>
                 </div>
 
-                <div class="form-group col-2">
+                <div class="form-group col-1">
                   <label v-bind:for="'sets-' + index">{% trans 'Sets' %}</label>
                   <input class="form-control" type="number" v-bind:id="'sets-' + index" v-model.number="newWorkoutExercise.sets" v-bind:class="{ 'is-invalid' : hasFormFieldErrors('workout_exercises.' + index + '.sets') }" min="0">
                   <div class="invalid-feedback" v-if="hasFormFieldErrors('workout_exercises.' + index + '.sets')">
@@ -70,7 +84,7 @@
                   </div>
                 </div>
 
-                <div class="form-group col-2">
+                <div class="form-group col-1">
                   <label v-bind:for="'reps-' + index">{% trans 'Reps' %}</label>
                   <input class="form-control" type="number" v-bind:id="'reps-' + index" v-model.number="newWorkoutExercise.reps" v-bind:class="{ 'is-invalid' : hasFormFieldErrors('workout_exercises.' + index + '.reps') }" min="0">
                   <div class="invalid-feedback" v-if="hasFormFieldErrors('workout_exercises.' + index + '.reps')">
@@ -78,8 +92,8 @@
                   </div>
                 </div>
 
-                <div class="form-group col-2">
-                  <label v-bind:for="'rest-period-' + index">{% trans 'Rest period' %}</label>
+                <div class="form-group col-1">
+                  <label v-bind:for="'rest-period-' + index">{% trans 'Rest' %}</label>
                   <input class="form-control" type="number" v-bind:id="'rest-period-' + index" v-model.number="newWorkoutExercise.rest_period" v-bind:class="{ 'is-invalid' : hasFormFieldErrors('workout_exercises.' + index + '.rest_period') }" min="0">
                   <div class="invalid-feedback" v-if="hasFormFieldErrors('workout_exercises.' + index + '.rest_period')">
                     <span v-for="msg in formErrors.workout_exercises[index].rest_period">[[ msg ]]</span>
@@ -87,12 +101,12 @@
                 </div>
 
                 <div class="form-group col-2">
-                  <button class="btn btn-link" type="button" v-on:click="removeWorkoutExercise(index)"><i class="fas fa-minus"></i> {% trans 'Delete' %}</button>
+                  <button class="btn btn-link" type="button" v-on:click="removeWorkoutExercise(newResource, index)"><i class="fas fa-minus"></i> {% trans 'Delete' %}</button>
                 </div>
               </div>
 
               <div>
-                <button class="btn btn-link" type="button" v-on:click="addWorkoutExercise()">
+                <button class="btn btn-link" type="button" v-on:click="addWorkoutExercise(newResource)">
                   <i class="fas fa-plus"></i> {% trans 'Add' %}
                 </button>
               </div>

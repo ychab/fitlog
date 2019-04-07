@@ -74,6 +74,7 @@ class WorkoutExercise(models.Model):
     """
     workout = models.ForeignKey(Workout, related_name='workout_exercises', on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, related_name='workout_exercises', on_delete=models.CASCADE)
+    unilateral = models.BooleanField(default=False)
     order = models.IntegerField(default=0)
     sets = models.IntegerField()
     reps = models.IntegerField()
@@ -135,6 +136,7 @@ class TrainingExercise(models.Model):
 class TrainingExerciseSet(models.Model):
     training_exercise = models.ForeignKey(TrainingExercise, related_name='training_exercise_sets', on_delete=models.CASCADE)
 
+    unilateral = models.BooleanField(default=False)
     order = models.IntegerField()
     reps = models.IntegerField()
     weight = models.FloatField()

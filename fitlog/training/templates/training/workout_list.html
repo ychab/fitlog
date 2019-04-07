@@ -23,7 +23,7 @@
   <div class="card-body">
     <div class="table-responsive">
 
-      <div v-if="loadingWorkouts || loadingRoutines || loadingExercises" class="p-2">
+      <div id="spinner-results" v-if="loadingWorkouts || loadingRoutines || loadingExercises" class="p-2">
         <div class="d-flex align-items-center">
           <strong>{% trans 'Loading...' %}</strong>
           <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
@@ -45,11 +45,13 @@
             <td>[[ resource.routine.name ]]</td>
             <td>
               <ul v-for="workout_exercise in resource.workout_exercises">
-                <li>[[ workout_exercise.exercise.name ]]: [[ workout_exercise.sets ]] / [[ workout_exercise.reps ]] / [[ workout_exercise.rest_period ]]</li>
+                <li>[[ workout_exercise.exercise.name ]]: [[ workout_exercise.sets ]] / [[ workout_exercise.reps ]] / [[ workout_exercise.rest_period ]]
+                  <span v-if="workout_exercise.unilateral" class="badge badge-secondary">{% trans 'unilateral' %}</span>
+                </li>
               </ul>
             </td>
             <td>
-              <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target="'#modal-update-' + resource.id"><i class="fas fa-save"></i></button>
+              <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target="'#modal-update-' + resource.id"><i class="fas fa-edit"></i></button>
               <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target="'#modal-delete-' + resource.id"><i class="fas fa-trash"></i></button>
             </td>
           </tr>
