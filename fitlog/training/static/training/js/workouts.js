@@ -140,13 +140,13 @@ const vm = new Vue({
 
       this.newResource = newResource
     },
-    addWorkoutExercise() {
+    addWorkoutExercise(resource) {
       let workoutExercise = this._prepareNewWorkoutExercise()
-      workoutExercise.order = this.newResource.workout_exercises.length
-      this.newResource.workout_exercises.push(workoutExercise)
+      workoutExercise.order = resource.workout_exercises.length
+      resource.workout_exercises.push(workoutExercise)
     },
-    removeWorkoutExercise(index) {
-      this.newResource.workout_exercises.splice(index, 1)
+    removeWorkoutExercise(resource, index) {
+      resource.workout_exercises.splice(index, 1)
     },
     createResource(resource) {
       this.creating = true

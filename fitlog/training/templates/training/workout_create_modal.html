@@ -42,7 +42,7 @@
             <div class="card-header">{% trans 'Exercises' %}</div>
             <div class="card-body">
 
-              <div v-for="(newWorkoutExercise, index) in newResource.workout_exercises" class="form-row">
+              <div v-for="(newWorkoutExercise, index) in newResource.workout_exercises" class="form-row border border-secondary rounded p-2">
 
                 <div class="form-group col-2">
                   <label v-bind:for="'exercise-' + index">{% trans 'Exercise' %}</label>
@@ -87,12 +87,12 @@
                 </div>
 
                 <div class="form-group col-2">
-                  <button class="btn btn-link" type="button" v-on:click="removeWorkoutExercise(index)"><i class="fas fa-minus"></i> {% trans 'Delete' %}</button>
+                  <button class="btn btn-link" type="button" v-on:click="removeWorkoutExercise(newResource, index)"><i class="fas fa-minus"></i> {% trans 'Delete' %}</button>
                 </div>
               </div>
 
               <div>
-                <button class="btn btn-link" type="button" v-on:click="addWorkoutExercise()">
+                <button class="btn btn-link" type="button" v-on:click="addWorkoutExercise(newResource)">
                   <i class="fas fa-plus"></i> {% trans 'Add' %}
                 </button>
               </div>
